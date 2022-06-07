@@ -1,0 +1,8 @@
+cd C:\work\HeeYoon\yolov5
+conda activate torch
+python detect.py --source 0
+
+
+
+
+
