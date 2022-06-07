@@ -107,8 +107,8 @@ public class ObjectMatchPage : MonoBehaviour
 
     public void DoneButtonClicked()
     {
-        TaskManager.Instance.CurrentTaskState = TaskManager.TaskState.Play;
-
         NetworkManager.Instance.SendMatchDone();
+        
+        TaskManager.Instance.CurrentTaskState = TaskManager.TaskState.Play;
     }
 }
