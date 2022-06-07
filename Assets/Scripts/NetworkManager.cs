@@ -80,6 +80,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void StartSync()
     {
         Debug.LogError($"Sync를 시작합니다.");
+        
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"IsStart", true}});
 
         CurrentSyncState = SyncState.Sync;
     }
@@ -136,6 +138,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                         Debug.LogError($"모든 플레이어가 준비 완료!");
                         TaskManager.Instance.startPage.ShowButton(false, true);
                     }
+
+                    // 선생일때
+                    if (TaskManager.Instance.isTeacher)
+                    {
+                        // 학생이 시작버튼을 누른 상태라면.
+                        if (PhotonNetwork.CurrentRoom.Players.Values.Any(i => (bool) i.CustomProperties["IsStart"]))
+                        {
+                            TaskManager.Instance.CurrentTaskState = TaskManager.TaskState.Match;
+                            StartSync();
+                        }
+                    }
                 }
             }
                 break;
@@ -159,11 +172,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         _timer += Time.deltaTime;
     }
+
+    public void SendMatchDone()
+    {
+        photonView.RPC("AnnounceMatchDone", RpcTarget.Others);
+    }
+    
+    [PunRPC]
+    public void AnnounceMatchDone()
+    {
+        Debug.LogError("RPC로 AnnounceMatchDone 호출됨");
+        
+        TaskManager.Instance.CurrentTaskState = TaskManager.TaskState.Play;
+    }
     
     // 정보 전달하기.. 어떤식으로 전달하지 json? list?
     private void SendSyncData()
     {
-        // 현재 뭘 보내줘야 하는지?
+        // 어떤 오브젝트 끼리 어떤 상호작용이 일어나고 있는지 내용을 보내줘야함.
         
         
         

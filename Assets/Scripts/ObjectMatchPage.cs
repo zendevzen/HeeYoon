@@ -11,6 +11,12 @@ public class ObjectMatchPage : MonoBehaviour
 
     public GameObject fixModeTextGo;
 
+    public GameObject forTeacherPanel;
+    public GameObject forStudentPanel;
+
+    public GameObject fixButtonGo;
+    public GameObject doneButtonGo;
+
     private bool _isFixMode = false;
 
     public bool IsFixMode
@@ -25,7 +31,24 @@ public class ObjectMatchPage : MonoBehaviour
 
     public void Init()
     {
-        IsFixMode = false;
+        if (TaskManager.Instance.isTeacher)
+        {
+            forTeacherPanel.SetActive(true);
+            forStudentPanel.SetActive(false);
+            
+            fixButtonGo.SetActive(false);
+            doneButtonGo.SetActive(false);
+        }
+        else
+        {
+            forTeacherPanel.SetActive(false);
+            forStudentPanel.SetActive(true);
+            
+            fixButtonGo.SetActive(true);
+            doneButtonGo.SetActive(true);
+            
+            IsFixMode = false;
+        }
     }
 
     public void RefreshList()
@@ -85,5 +108,7 @@ public class ObjectMatchPage : MonoBehaviour
     public void DoneButtonClicked()
     {
         TaskManager.Instance.CurrentTaskState = TaskManager.TaskState.Play;
+
+        NetworkManager.Instance.SendMatchDone();
     }
 }

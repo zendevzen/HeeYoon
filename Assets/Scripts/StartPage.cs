@@ -229,6 +229,12 @@ public class StartPage : MonoBehaviour
         
         startButton.SetActive(start);
         startButtonBg.SetActive(!start);
+
+        if (TaskManager.Instance.isTeacher)
+        {
+            startButton.SetActive(false);
+            startButtonBg.SetActive(false);
+        }
     }
     
     public void OnReadyButtonClicked()
