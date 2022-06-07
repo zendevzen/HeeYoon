@@ -252,6 +252,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.LogError("Room에 입장했습니다.");
 
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"IsReady", false}});
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"IsStart", false}});
+        
         CurrentSyncState = SyncState.Wait;
     }
 
