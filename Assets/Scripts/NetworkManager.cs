@@ -14,6 +14,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public static NetworkManager Instance => _instance;
 
+    public PhotonView _photonView;
+
     private void Awake()
     {
         _instance = this;
@@ -135,7 +137,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                     // 모두 준비가 됐으면 state를 sync로 변경
                     if (PhotonNetwork.CurrentRoom.Players.Values.All(i => (bool) i.CustomProperties["IsReady"]))
                     {
-                        Debug.LogError($"모든 플레이어가 준비 완료!");
+                        // Debug.LogError($"모든 플레이어가 준비 완료!");
                         TaskManager.Instance.startPage.ShowButton(false, true);
                     }
 
@@ -179,7 +181,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void SendMatchDone()
     {
-        photonView.RPC("AnnounceMatchDone", RpcTarget.Others);
+        _photonView.RPC("AnnounceMatchDone", RpcTarget.Others);
     }
     
     [PunRPC]
