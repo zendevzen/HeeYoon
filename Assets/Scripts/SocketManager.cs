@@ -30,13 +30,26 @@ public class SocketManager : MonoBehaviour
     public List<GameObject> augmentedObjectList = new List<GameObject>();
     
     
-    void AugmentingObject2()
+    private static SocketManager _instance;
+
+    public static SocketManager Instance => _instance;
+
+    private void Awake()
     {
-        var bx = 0.3f;
-        var by = -0.3f;
-        var bz = 0.3f;
+        _instance = this;
+    }
+    
+    private float _bx = 0.3f;
+    private float _by = -0.3f; //TaskManager.Instance.workPlacePos.y; // 손높이로하자
+    private float _bz = 0.3f;
 
-
+    public void SetWorkSpaceHeight(float height)
+    {
+        _by = height;
+    }
+    
+    void AugmentingObject()
+    {
         foreach (var t in augmentedObjectList)
         {
             t.SetActive(false);
@@ -53,8 +66,8 @@ public class SocketManager : MonoBehaviour
             var _y = -(detectedDataList[i].y_0 + detectedDataList[i].y_1)/2000;
             
             augmentedObjectList[i].SetActive(true);
-            augmentedObjectList[i].transform.position = new Vector3(-_x+bx,by,-_y+bz);
-            augmentedObjectList[i].GetComponent<AugmentedObject>().SetText(detectedDataList[i].name);
+            augmentedObjectList[i].transform.position = new Vector3(-_x+_bx,_by,-_y+_bz);
+            augmentedObjectList[i].GetComponent<AugmentedObject>().SetObjectData(detectedDataList[i].name);
         }
     }
     
@@ -111,7 +124,7 @@ public class SocketManager : MonoBehaviour
                 var msg = Encoding.UTF8.GetString(receivedBuffer, 0, receivedBuffer.Length);
 
                 msg = msg.Replace("\u0000", "");
-                Debug.Log(msg);
+                //Debug.Log(msg);
                 var jsonStr = JsonConvert.DeserializeObject<JObject>(msg);
 
                 foreach (var item in jsonStr["detectData"])
@@ -128,11 +141,12 @@ public class SocketManager : MonoBehaviour
                     
                     detectedDataList.Add(itemData);
                 }
-                
-                // AugmentingObject();
-                AugmentingObject2();
+
+                if (TaskManager.Instance.CurrentTaskState == TaskManager.TaskState.Play)
+                {
+                    AugmentingObject();
+                }
             }
-            
         }
         else
         {

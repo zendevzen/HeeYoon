@@ -91,8 +91,6 @@ public class TaskManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        
-        objectMatchPage.gameObject.SetActive(false);
 
         CurrentTaskState = TaskState.Ready;
     }
@@ -108,11 +106,98 @@ public class TaskManager : MonoBehaviour
     // 손 두개로 위치잡기
     
     // 두손다 쥐어서 넘기기
-    
 
-    public List<string> teacherObjectList = new List<string>{"donut", "bottle", "plate", "knife", "banana", "bowl", "spoon"};
 
-    public List<string> studentObjectList = new List<string>{"donut", "apple", "plate", "knife", "cup", "bowl", "spoon"};
+    public enum ObjectCategory
+    {
+        Food,
+        Knife,
+        Spoon,
+        Bowl
+    }
     
-    
+    public class ObjectData
+    {
+        public string Name;
+        public ObjectCategory Category;
+
+        public List<ObjectData> InsideObjectList = new List<ObjectData>();
+    }
+
+    public List<ObjectData> teacherObjectDataList = new List<ObjectData>()
+    {
+        new ObjectData()
+        {
+            Name = "donut",
+            Category = ObjectCategory.Food
+        },
+        new ObjectData()
+        {
+            Name = "bottle",
+            Category = ObjectCategory.Bowl
+        },
+        new ObjectData()
+        {
+            Name = "plate",
+            Category = ObjectCategory.Bowl
+        },
+        new ObjectData()
+        {
+            Name = "knife",
+            Category = ObjectCategory.Knife
+        },
+        new ObjectData()
+        {
+            Name = "banana",
+            Category = ObjectCategory.Food
+        },
+        new ObjectData()
+        {
+            Name = "bowl",
+            Category = ObjectCategory.Bowl
+        },
+        new ObjectData()
+        {
+            Name = "spoon",
+            Category = ObjectCategory.Spoon
+        },
+    };
+    public List<ObjectData> studentObjectDataList = new List<ObjectData>()
+    {
+        new ObjectData()
+        {
+            Name = "donut",
+            Category = ObjectCategory.Food
+        },
+        new ObjectData()
+        {
+            Name = "apple",
+            Category = ObjectCategory.Food
+        },
+        new ObjectData()
+        {
+            Name = "plate",
+            Category = ObjectCategory.Bowl
+        },
+        new ObjectData()
+        {
+            Name = "knife",
+            Category = ObjectCategory.Knife
+        },
+        new ObjectData()
+        {
+            Name = "cup",
+            Category = ObjectCategory.Bowl
+        },
+        new ObjectData()
+        {
+            Name = "bowl",
+            Category = ObjectCategory.Bowl
+        },
+        new ObjectData()
+        {
+            Name = "spoon",
+            Category = ObjectCategory.Spoon
+        },
+    };
 }

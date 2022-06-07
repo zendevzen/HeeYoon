@@ -14,6 +14,11 @@ public class ObjectForGrab : MonoBehaviour
 
     private Vector3 _leftGrabVector3 = new Vector3(0.01f, 0.01f, 0f);
     private Vector3 _rightGrabVector3 = new Vector3(-0.01f, 0.01f, 0f);
+
+    private TaskManager.ObjectData _grabbedObjectData;
+
+    private Vector3 _handRotationOnGrabbed;
+    
     void Update()
     {
         if (isLeft)
@@ -32,21 +37,63 @@ public class ObjectForGrab : MonoBehaviour
             transform.SetParent(null);
         }
     }
-
-    public static bool LeftGrab;
-    public static bool RightGrab;
+    
     
     public void Grab()
     {
         Debug.LogError("잡음");
 
-        if (isLeft)
+        switch (TaskManager.Instance.CurrentTaskState)
         {
-            TaskManager.Instance.startPage.OnLeftFistGrip();
-        }
-        else
-        {
-            TaskManager.Instance.startPage.OnRightFistGrip();
+            case TaskManager.TaskState.Ready:
+            {
+                if (isLeft)
+                {
+                    TaskManager.Instance.startPage.OnLeftFistGrip();
+                }
+                else
+                {
+                    TaskManager.Instance.startPage.OnRightFistGrip();
+                }
+            }
+                break;
+            
+            case TaskManager.TaskState.Match:
+            {
+                
+            }
+                break;
+            
+            case TaskManager.TaskState.Play:
+            {
+                var minVal = 0.05f; // 거리 임계값
+                var minIndex = -1;
+                
+                for (var i = 0; i < SocketManager.Instance.augmentedObjectList.Count; i++)
+                {
+                    var dist = Vector3.Distance(SocketManager.Instance.augmentedObjectList[i].transform.position,
+                        _handPosition.transform.position);
+                    if (dist < minVal)
+                    {
+                        minVal = dist;
+                        minIndex = i;
+                    }
+                }
+
+                if (minIndex > -1)
+                {
+                    _grabbedObjectData = SocketManager.Instance.augmentedObjectList[minIndex].GetComponent<AugmentedObject>()
+                        .objectData;
+                    
+                    Debug.LogError($"잡은 물체 : {_grabbedObjectData.Name}");
+
+                    _handRotationOnGrabbed = _handPosition.transform.rotation.eulerAngles;
+                    
+                    Debug.LogError($"잡을때 손 각도 : {_handRotationOnGrabbed}");
+                }
+                
+            }
+                break;
         }
     }
     
@@ -54,13 +101,33 @@ public class ObjectForGrab : MonoBehaviour
     {
         Debug.LogError("놓음");
         
-        if (isLeft)
+        switch (TaskManager.Instance.CurrentTaskState)
         {
-            TaskManager.Instance.startPage.OnLeftFistRelease();
-        }
-        else
-        {
-            TaskManager.Instance.startPage.OnRightFistRelease();
+            case TaskManager.TaskState.Ready:
+            {
+                if (isLeft)
+                {
+                    TaskManager.Instance.startPage.OnLeftFistRelease();
+                }
+                else
+                {
+                    TaskManager.Instance.startPage.OnRightFistRelease();
+                }
+            }
+                break;
+            
+            case TaskManager.TaskState.Match:
+            {
+                
+            }
+                break;
+            
+            case TaskManager.TaskState.Play:
+            {
+                Debug.LogError($"놓은 물체 : {_grabbedObjectData.Name}");
+                _grabbedObjectData = null;
+            }
+                break;
         }
     }
 }

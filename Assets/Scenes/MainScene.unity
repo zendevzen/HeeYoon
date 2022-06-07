@@ -5173,22 +5173,6 @@ MonoBehaviour:
   headPosTransform: {fileID: 963194228}
   pageHandlerTransform: {fileID: 457889729}
   workPlacePos: {x: 0, y: 0, z: 0}
-  teacherObjectList:
-  - donut
-  - bottle
-  - plate
-  - knife
-  - banana
-  - bowl
-  - spoon
-  studentObjectList:
-  - donut
-  - apple
-  - plate
-  - knife
-  - cup
-  - bowl
-  - spoon
 --- !u!1 &386798737
 GameObject:
   m_ObjectHideFlags: 0
@@ -27618,7 +27602,7 @@ MonoBehaviour:
   rotateLerpTime: 0.001
   scaleLerpTime: 0.001
   enableConstraints: 1
-  constraintsManager: {fileID: 1808904238}
+  constraintsManager: {fileID: 1452394954}
   elasticsManager: {fileID: 0}
   onManipulationStarted:
     m_PersistentCalls:

@@ -53,12 +53,12 @@ public class ObjectMatchPage : MonoBehaviour
 
     public void RefreshList()
     {
-        for (var i = 0; i < TaskManager.Instance.teacherObjectList.Count; i++)
+        for (var i = 0; i < TaskManager.Instance.teacherObjectDataList.Count; i++)
         {
-            teacherButtonTextList[i].text = TaskManager.Instance.teacherObjectList[i];
+            teacherButtonTextList[i].text = TaskManager.Instance.teacherObjectDataList[i].Name;
             teacherButtonTextList[i].color = Color.black;
 
-            studentButtonTextList[i].text = TaskManager.Instance.studentObjectList[i];
+            studentButtonTextList[i].text = TaskManager.Instance.teacherObjectDataList[i].Name;
             studentButtonTextList[i].color = Color.black;
         }
         
@@ -97,9 +97,9 @@ public class ObjectMatchPage : MonoBehaviour
         // 선택된 버튼이 있는경우
         else
         {
-            (TaskManager.Instance.studentObjectList[_currentSelectedIndex],
-                TaskManager.Instance.studentObjectList[index]) = (TaskManager.Instance.studentObjectList[index],
-                TaskManager.Instance.studentObjectList[_currentSelectedIndex]);
+            (TaskManager.Instance.studentObjectDataList[_currentSelectedIndex],
+                TaskManager.Instance.studentObjectDataList[index]) = (TaskManager.Instance.studentObjectDataList[index],
+                TaskManager.Instance.studentObjectDataList[_currentSelectedIndex]);
 
             RefreshList();
         }

@@ -154,6 +154,9 @@ public class StartPage : MonoBehaviour
 
         TaskManager.Instance.workPlacePos = (leftHandPosGo.transform.position + rightHandPosGo.transform.position) / 2f;
         
+        // 작업공간의 높이를 설정해준다.
+        SocketManager.Instance.SetWorkSpaceHeight(TaskManager.Instance.workPlacePos.y);
+        
         Debug.LogError($"workPlacePos {TaskManager.Instance.workPlacePos}");
         
         yield return new WaitForSecondsRealtime(3f);
