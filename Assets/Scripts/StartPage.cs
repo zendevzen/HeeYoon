@@ -60,6 +60,13 @@ public class StartPage : MonoBehaviour
 
         ShowButton(false, false);
 
+        if (TaskManager.Instance.isTeacher)
+        {
+            CurrentStartPageState = StartPageState.CheckConnection;
+
+            return;
+        }
+
         leftProgressImage.fillAmount = 0f;
         leftFistText.gameObject.SetActive(true);
         rightProgressImage.fillAmount = 0f;
@@ -241,7 +248,14 @@ public class StartPage : MonoBehaviour
     {
         NetworkManager.Instance.AnnounceReady();
 
-        SetReadyStudent(true);
+        if (TaskManager.Instance.isTeacher)
+        {
+            SetReadyTeacher(true);
+        }
+        else
+        {
+            SetReadyStudent(true);
+        }
     }
     
     public void OnStartButtonClicked()
