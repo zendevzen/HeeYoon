@@ -143,7 +143,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                     if (TaskManager.Instance.isTeacher)
                     {
                         if (PhotonNetwork.CurrentRoom.Players.Values.Any(i =>
-                                i.CustomProperties.ContainsKey("IsReady")))
+                                i.CustomProperties.ContainsKey("IsStart")))
                         {
                             // 학생이 시작버튼을 누른 상태라면.
                             if (PhotonNetwork.CurrentRoom.Players.Values.Any(i => (bool) i.CustomProperties["IsStart"]))
