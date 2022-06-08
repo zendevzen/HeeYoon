@@ -9,6 +9,9 @@ public class ObjectForGrab : MonoBehaviour
 
     public bool isLeft;
 
+    public Transform upPourChecker;
+    public Transform downPourChecker;
+
     private string _leftPosName = "Left_ConicalGrabPointer(Clone)";
     private string _rightPosName = "Right_ConicalGrabPointer(Clone)";
 
@@ -34,7 +37,21 @@ public class ObjectForGrab : MonoBehaviour
         {
             transform.SetParent(_handPosition.transform);
             transform.localPosition = (isLeft) ? _leftGrabVector3 : _rightGrabVector3;
+            transform.localRotation = Quaternion.Euler(new Vector3(30f,60f,55f));
             transform.SetParent(null);
+
+            if (!ReferenceEquals(_grabbedObjectData, null))
+            {
+                if (_grabbedObjectData.Category == TaskManager.ObjectCategory.Bowl)
+                {
+                    if (Mathf.Abs(upPourChecker.position.y - downPourChecker.position.y) < 0.02f)
+                    {
+                        // TODO : 왼손 오른손 양쪽에 보울 들고 기울일때 붓는걸로 하자.
+                        Debug.LogError($"{Mathf.Abs(upPourChecker.position.y - downPourChecker.position.y)}   기울임!!!!");
+                    }
+                }
+            }
+            
         }
     }
     
@@ -64,15 +81,18 @@ public class ObjectForGrab : MonoBehaviour
             }
                 break;
             
-            case TaskManager.TaskState.Play:
+            case TaskManager.TaskState.Play: // TODO : 이부분 해결하기 뭐 잡았는지 알아야하고 그다음 만나는거에 따라서 컷같은 이벤트 알게하기.
             {
-                var minVal = 0.05f; // 거리 임계값
+                var minVal = 0.5f; // 거리 임계값
                 var minIndex = -1;
                 
                 for (var i = 0; i < SocketManager.Instance.augmentedObjectList.Count; i++)
                 {
                     var dist = Vector3.Distance(SocketManager.Instance.augmentedObjectList[i].transform.position,
                         _handPosition.transform.position);
+                    
+                    Debug.LogError($"dist {SocketManager.Instance.augmentedObjectList[i].nameText.text} {dist}");
+                    
                     if (dist < minVal)
                     {
                         minVal = dist;
@@ -84,6 +104,11 @@ public class ObjectForGrab : MonoBehaviour
                 {
                     _grabbedObjectData = SocketManager.Instance.augmentedObjectList[minIndex].GetComponent<AugmentedObject>()
                         .objectData;
+
+                    if (ReferenceEquals(_grabbedObjectData, null))
+                    {
+                        break;
+                    }
                     
                     Debug.LogError($"잡은 물체 : {_grabbedObjectData.Name}");
 
@@ -124,7 +149,12 @@ public class ObjectForGrab : MonoBehaviour
             
             case TaskManager.TaskState.Play:
             {
-                Debug.LogError($"놓은 물체 : {_grabbedObjectData.Name}");
+                if (ReferenceEquals(_grabbedObjectData, null))
+                {
+                    break;
+                }
+                
+                Debug.LogError($"놓은 물체 : {_grabbedObjectData?.Name}");
                 _grabbedObjectData = null;
             }
                 break;

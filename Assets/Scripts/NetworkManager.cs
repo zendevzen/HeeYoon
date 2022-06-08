@@ -66,8 +66,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     private void PrepareForSync()
     {
-        // TODO : 카메라 나 마커 인식이 다 되었는지 체크해야함..
-
         TaskManager.Instance.startPage.ShowButton(true, false);
     }
 

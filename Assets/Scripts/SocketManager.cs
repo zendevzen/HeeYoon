@@ -15,21 +15,21 @@ public class SocketManager : MonoBehaviour
 {
     private TcpClient client;
     private string serverIP = "127.0.0.1";
-    private int port = 8000;
+    private int port = 8001;
     private byte[] receivedBuffer;
     private StreamReader reader;
     private bool socketReady = false;
     private NetworkStream stream;
-    
-    
+
+
     private List<DetectedData> detectedDataList = new List<DetectedData>();
-    
+
 
     public GameObject augmentedObjectPrefab;
-    
-    public List<GameObject> augmentedObjectList = new List<GameObject>();
-    
-    
+
+    public List<AugmentedObject> augmentedObjectList = new List<AugmentedObject>();
+
+
     private static SocketManager _instance;
 
     public static SocketManager Instance => _instance;
@@ -38,7 +38,7 @@ public class SocketManager : MonoBehaviour
     {
         _instance = this;
     }
-    
+
     private float _bx = 0.3f;
     private float _by = -0.3f; //TaskManager.Instance.workPlacePos.y; // 손높이로하자
     private float _bz = 0.3f;
@@ -47,36 +47,45 @@ public class SocketManager : MonoBehaviour
     {
         _by = height;
     }
-    
+
     void AugmentingObject()
     {
         foreach (var t in augmentedObjectList)
         {
-            t.SetActive(false);
+            t.gameObject.SetActive(false);
         }
 
         for (var i = 0; i < detectedDataList.Count; i++)
         {
-            if (i > augmentedObjectList.Count - 1)
+            var matchItem = augmentedObjectList.Find(item => item.objectData?.Name == detectedDataList[i].name);
+
+            if (ReferenceEquals(matchItem, null))
             {
-                augmentedObjectList.Add(Instantiate(augmentedObjectPrefab));
+                matchItem = augmentedObjectList.Find(item => ReferenceEquals(item.objectData, null));
+            }
+
+            if (ReferenceEquals(matchItem, null))
+            {
+                augmentedObjectList.Add(Instantiate(augmentedObjectPrefab).GetComponent<AugmentedObject>());
+                return;
             }
             
-            var _x = (detectedDataList[i].x_0 + detectedDataList[i].x_1)/2000;
-            var _y = -(detectedDataList[i].y_0 + detectedDataList[i].y_1)/2000;
+            var _x = (detectedDataList[i].x_0 + detectedDataList[i].x_1) / 2000;
+            var _y = -(detectedDataList[i].y_0 + detectedDataList[i].y_1) / 2000;
             
-            augmentedObjectList[i].SetActive(true);
-            augmentedObjectList[i].transform.position = new Vector3(-_x+_bx,_by,-_y+_bz);
-            augmentedObjectList[i].GetComponent<AugmentedObject>().SetObjectData(detectedDataList[i].name);
+            matchItem.gameObject.SetActive(true);
+            matchItem.transform.position = new Vector3(-_x + _bx, _by, -_y + _bz);
+            matchItem.SetObjectData(detectedDataList[i].name);
         }
     }
-    
+
     private void CheckReceive()
     {
         if (socketReady)
         {
             return;
         }
+
         try
         {
             client = new TcpClient(serverIP, port);
@@ -88,9 +97,9 @@ public class SocketManager : MonoBehaviour
                 socketReady = true;
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            Debug.Log("On client connect exception "+e);
+            Debug.Log("On client connect exception " + e);
         }
     }
 
@@ -101,6 +110,7 @@ public class SocketManager : MonoBehaviour
         client.Close();
         socketReady = false;
     }
+
     private void OnApplicationQuit()
     {
         CloseSocket();
@@ -110,7 +120,7 @@ public class SocketManager : MonoBehaviour
     {
         CheckReceive();
     }
-    
+
     void Update()
     {
         if (socketReady)
@@ -118,7 +128,7 @@ public class SocketManager : MonoBehaviour
             if (stream.DataAvailable)
             {
                 detectedDataList.Clear();
-                
+
                 receivedBuffer = new byte[1440];
                 stream.Read(receivedBuffer, 0, receivedBuffer.Length);
                 var msg = Encoding.UTF8.GetString(receivedBuffer, 0, receivedBuffer.Length);
@@ -138,7 +148,7 @@ public class SocketManager : MonoBehaviour
                         y_1 = float.Parse(item["bbox"][3].ToString()),
                     };
                     //Debug.Log($"name {itemData.name} x0 {itemData.x_0} y0 {itemData.y_0} x1 {itemData.x_1} y1 {itemData.y_1}");
-                    
+
                     detectedDataList.Add(itemData);
                 }
 
