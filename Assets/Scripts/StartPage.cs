@@ -99,9 +99,14 @@ public class StartPage : MonoBehaviour
     private bool _isRightFistDone;
 
     private bool _isDone;
+
+    public GameObject mapGo;
     
     public void OnLeftFistGrip()
     {
+        if (TaskManager.Instance.CurrentTaskState != TaskManager.TaskState.Ready)
+            return;
+        
         leftProgressImage.fillAmount = 0f;
         
         leftFistText.gameObject.SetActive(false);
@@ -111,6 +116,9 @@ public class StartPage : MonoBehaviour
 
     public void OnLeftFistRelease()
     {
+        if (TaskManager.Instance.CurrentTaskState != TaskManager.TaskState.Ready)
+            return;
+        
         if (_isDone)
             return;
         
@@ -123,6 +131,9 @@ public class StartPage : MonoBehaviour
     
     public void OnRightFistGrip()
     {
+        if (TaskManager.Instance.CurrentTaskState != TaskManager.TaskState.Ready)
+            return;
+        
         rightProgressImage.fillAmount = 0f;
         
         rightFistText.gameObject.SetActive(false);
@@ -132,6 +143,9 @@ public class StartPage : MonoBehaviour
 
     public void OnRightFistRelease()
     {
+        if (TaskManager.Instance.CurrentTaskState != TaskManager.TaskState.Ready)
+            return;
+        
         if (_isDone)
             return;
         
@@ -155,9 +169,15 @@ public class StartPage : MonoBehaviour
         TaskManager.Instance.workPlacePos = (leftHandPosGo.transform.position + rightHandPosGo.transform.position) / 2f;
         
         // 작업공간의 높이를 설정해준다.
-        SocketManager.Instance.SetWorkSpaceHeight(TaskManager.Instance.workPlacePos.y);
+        //SocketManager.Instance.SetWorkSpaceHeight(TaskManager.Instance.workPlacePos.y);
         
         Debug.LogError($"workPlacePos {TaskManager.Instance.workPlacePos}");
+
+        mapGo.transform.position = TaskManager.Instance.workPlacePos;
+        mapGo.transform.LookAt(TaskManager.Instance.headPosTransform);
+        var angle = mapGo.transform.rotation.eulerAngles;
+        var yVal = angle.y;
+        mapGo.transform.rotation = Quaternion.Euler(0f, yVal, 0f);
         
         yield return new WaitForSecondsRealtime(3f);
 

@@ -39,14 +39,14 @@ public class SocketManager : MonoBehaviour
         _instance = this;
     }
 
-    private float _bx = 0.3f;
-    private float _by = -0.3f; //TaskManager.Instance.workPlacePos.y; // 손높이로하자
-    private float _bz = 0.3f;
+    public float _bx = 0.3f;
+    public float _by = 0f; //TaskManager.Instance.workPlacePos.y; // 손높이로하자
+    public float _bz = -0.3f;
 
-    public void SetWorkSpaceHeight(float height)
+    /*public void SetWorkSpaceHeight(float height)
     {
         _by = height;
-    }
+    }*/
 
     void AugmentingObject()
     {
@@ -76,7 +76,6 @@ public class SocketManager : MonoBehaviour
             matchItem.gameObject.SetActive(true);
             matchItem.transform.position = TaskManager.Instance.workPlacePos + new Vector3(-_x + _bx, _by, -_y + _bz);
             
-            //TODO : 이거 손위치 기준에서 하도록!
             matchItem.SetObjectData(detectedDataList[i].name);
         }
     }

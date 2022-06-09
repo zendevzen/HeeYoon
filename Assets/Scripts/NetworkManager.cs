@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -160,21 +161,73 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             case SyncState.Sync:
             {
                 // Expert 인 경우
-                if (TaskManager.Instance.isTeacher && _timer > 0.1f)
+                if (TaskManager.Instance.isTeacher && _timer > 1f)
                 {
                     _timer = 0;
-                    SendSyncData();
+                    SendAnimationData();
                 }
 
                 // Worker 인 경우
-                else
+                if (!TaskManager.Instance.isTeacher && _timer > 1f)
                 {
+                    // TODO : 큐에 쌓인거 하나씩 시간차 두고하기
                 }
             }
                 break;
         }
 
         _timer += Time.deltaTime;
+    }
+
+    public List<AnimationData> animationDataList = new List<AnimationData>();
+
+    public class AnimationData
+    {
+        public AnimationCategory Category;
+
+        public string MainName;
+        public string SubName;
+
+        public string NearObjectNameForMove;
+    }
+
+    public enum AnimationCategory
+    {
+        Move,
+        Put,
+        Mix,
+        Chop,
+        Pour
+    }
+
+    // 정보 전달하기.. 어떤식으로 전달하지 json? list?
+    private void SendAnimationData()
+    {
+        // 어떤 오브젝트 끼리 어떤 상호작용이 일어나고 있는지 내용을 보내줘야함.
+
+        //TODO : 트리밍 해줘야함. 같은거 여러번 가거나 하는걸 막아야함.. 어케하지 1초마다니까 같은거 검색해서 하나뺴고 다지워 근데 중간에 다른거 껴있으면 앞에거지우나 뒤에꺼 지우나. 낀건 오류일 확률이 높겠지 1초니까
+
+        if (animationDataList.Count > 0)
+        {
+            var jsonString = JsonConvert.SerializeObject(animationDataList);
+            photonView.RPC("GetAnimationData", RpcTarget.Others, jsonString);
+        }
+    }
+
+    [PunRPC]
+    public void GetAnimationData(string jsonString)
+    {
+        Debug.LogError($"GetAnimationData 호출됨 {jsonString}");
+        
+        var dataList = JsonConvert.DeserializeObject<List<AnimationData>>(jsonString);
+
+        if (dataList?.Count > 0)
+        {
+            foreach (var data in dataList)
+            {
+                animationDataList.Add(data);
+            }
+        }
     }
 
     public void SendMatchDone()
@@ -190,37 +243,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         TaskManager.Instance.CurrentTaskState = TaskManager.TaskState.Play;
     }
     
-    // 정보 전달하기.. 어떤식으로 전달하지 json? list?
-    private void SendSyncData()
-    {
-        // 어떤 오브젝트 끼리 어떤 상호작용이 일어나고 있는지 내용을 보내줘야함.
-        
-        
-        
-        
-        /*switch (currentTaskLevel)
-        {
-            case TaskLevel.Second:
-            {
-                UpdatePosList();
-
-                var jsonString = JsonConvert.SerializeObject(posListForExpert);
-                
-                photonView.RPC("SyncObjectPosition", RpcTarget.Others, jsonString);
-            }
-                break;
-
-            case TaskLevel.Third:
-            {
-                UpdateRatioList();
-
-                var jsonString = JsonConvert.SerializeObject(distanceRatioListForExpert);
-                
-                photonView.RPC("SyncObjectPosition", RpcTarget.Others, jsonString);
-            }
-                break;
-        }*/
-    }
+   
     
     private void Start()
     {
