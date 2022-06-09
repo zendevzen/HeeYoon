@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ObjectForGrab : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class ObjectForGrab : MonoBehaviour
     private TaskManager.ObjectData _grabbedObjectData;
 
     private Vector3 _handRotationOnGrabbed;
+
+    public GameObject stateGo;
+    public Text stateText;
     
     void Update()
     {
@@ -39,21 +43,86 @@ public class ObjectForGrab : MonoBehaviour
             transform.localPosition = (isLeft) ? _leftGrabVector3 : _rightGrabVector3;
             transform.localRotation = Quaternion.Euler(new Vector3(30f,60f,55f));
             transform.SetParent(null);
+            
+            stateGo.transform.SetParent(transform);
+            stateGo.transform.localPosition = Vector3.zero;
+            stateGo.transform.Translate(0f,0.025f,0f);
+            stateGo.transform.SetParent(null);
+            stateGo.transform.LookAt(TaskManager.Instance.headPosTransform);
 
-            if (!ReferenceEquals(_grabbedObjectData, null))
+            if (ReferenceEquals(_grabbedObjectData, null))
             {
+                stateText.text = "empty";
+            }
+            else
+            {
+                stateText.text = $"grab - {_grabbedObjectData.Name}";
+                
                 if (_grabbedObjectData.Category == TaskManager.ObjectCategory.Bowl)
                 {
                     if (Mathf.Abs(upPourChecker.position.y - downPourChecker.position.y) < 0.02f)
                     {
                         // TODO : 왼손 오른손 양쪽에 보울 들고 기울일때 붓는걸로 하자.
                         Debug.LogError($"{Mathf.Abs(upPourChecker.position.y - downPourChecker.position.y)}   기울임!!!!");
+                        
+                        stateText.text = $"pour - {_grabbedObjectData.Name} -> 다른손꺼";
+                    }
+                }
+                else if (_grabbedObjectData.Category == TaskManager.ObjectCategory.Spoon)
+                {
+                    // TODO : 반대손 보울일때만.
+                    
+                    // TODO : 섞기 하기
+                    if (_mixStartPos == Vector3.zero)
+                    {
+                        _mixTimer = 0f;
+                        _maxDistance = 0f;
+
+                        _mixStartPos = transform.position;
+                    }
+                    else //감별중
+                    {
+                        _mixTimer += Time.deltaTime;
+
+                        var dist = Vector3.Distance(_mixStartPos, transform.position);
+
+                        Debug.LogError($"섞기 dist {dist}");
+                        
+                        if (dist > _maxDistance)
+                        {
+                            _maxDistance = dist;
+                        }
+
+                        if (_maxDistance >= _mixDistance && dist < _mixMinDistance)
+                        {
+                            Debug.LogError("섞는다 섞는다!!!!!!");
+                            
+                            stateText.text = $"mix - {_grabbedObjectData.Name} -> 다른손꺼";
+                        }
+
+                        if (_mixTimer > _waitTimer)
+                        {
+                            _mixTimer = 0f;
+                            _maxDistance = 0f;
+                            
+                            _mixStartPos = Vector3.zero;
+                        }
                     }
                 }
             }
-            
         }
     }
+
+    private Vector3 _mixStartPos = Vector3.zero;
+
+    private float _mixTimer = 0f;
+    
+    private float _waitTimer = 1f;
+
+    private float _mixDistance = 0.2f;
+    private float _mixMinDistance = 0.1f;
+    
+    private float _maxDistance;
     
     
     public void Grab()

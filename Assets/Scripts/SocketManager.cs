@@ -74,7 +74,9 @@ public class SocketManager : MonoBehaviour
             var _y = -(detectedDataList[i].y_0 + detectedDataList[i].y_1) / 2000;
             
             matchItem.gameObject.SetActive(true);
-            matchItem.transform.position = new Vector3(-_x + _bx, _by, -_y + _bz);
+            matchItem.transform.position = TaskManager.Instance.workPlacePos + new Vector3(-_x + _bx, _by, -_y + _bz);
+            
+            //TODO : 이거 손위치 기준에서 하도록!
             matchItem.SetObjectData(detectedDataList[i].name);
         }
     }

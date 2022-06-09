@@ -22,6 +22,9 @@ public class TaskManager : MonoBehaviour
 
     public Vector3 workPlacePos;
 
+    public ObjectForGrab leftObjectGrabber;
+    public ObjectForGrab rightObjectGrabber;
+
 
     public void FixCanvasToHead(bool isFix)
     {
@@ -92,8 +95,8 @@ public class TaskManager : MonoBehaviour
     {
         _instance = this;
 
-        CurrentTaskState = TaskState.Play;
-        //CurrentTaskState = TaskState.Ready;
+        //CurrentTaskState = TaskState.Play;
+        CurrentTaskState = TaskState.Ready;
     }
     
     // 선생인지 학생인지 선택하게 하기
