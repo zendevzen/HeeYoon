@@ -46,9 +46,11 @@ public class ObjectForGrab : MonoBehaviour
             
             stateGo.transform.SetParent(transform);
             stateGo.transform.localPosition = Vector3.zero;
-            stateGo.transform.Translate(0f,0.025f,0f);
             stateGo.transform.SetParent(null);
+            
             stateGo.transform.LookAt(TaskManager.Instance.headPosTransform);
+            stateGo.transform.Translate(0f,0.01f,-0.05f);
+            stateGo.transform.Rotate(20f,0f,0f);
 
             if (ReferenceEquals(_grabbedObjectData, null))
             {
@@ -64,14 +66,26 @@ public class ObjectForGrab : MonoBehaviour
                     {
                         // TODO : 왼손 오른손 양쪽에 보울 들고 기울일때 붓는걸로 하자.
                         Debug.LogError($"{Mathf.Abs(upPourChecker.position.y - downPourChecker.position.y)}   기울임!!!!");
-                        
-                        stateText.text = $"pour - {_grabbedObjectData.Name} -> 다른손꺼";
+
+                        if (!IsAnotherHandNullOrNotBowl())
+                        {
+                            stateText.text =
+                                $"pour - {_grabbedObjectData.Name} -> {GetAnotherHandObjectData().Name}";
+                        }
                     }
                 }
                 else if (_grabbedObjectData.Category == TaskManager.ObjectCategory.Spoon)
                 {
-                    // TODO : 반대손 보울일때만.
-                    
+                    if (IsAnotherHandNullOrNotBowl())
+                    {
+                        _mixTimer = 0f;
+                        _maxDistance = 0f;
+                            
+                        _mixStartPos = Vector3.zero;
+                            
+                        return;
+                    }
+
                     // TODO : 섞기 하기
                     if (_mixStartPos == Vector3.zero)
                     {
@@ -85,8 +99,6 @@ public class ObjectForGrab : MonoBehaviour
                         _mixTimer += Time.deltaTime;
 
                         var dist = Vector3.Distance(_mixStartPos, transform.position);
-
-                        Debug.LogError($"섞기 dist {dist}");
                         
                         if (dist > _maxDistance)
                         {
@@ -97,7 +109,7 @@ public class ObjectForGrab : MonoBehaviour
                         {
                             Debug.LogError("섞는다 섞는다!!!!!!");
                             
-                            stateText.text = $"mix - {_grabbedObjectData.Name} -> 다른손꺼";
+                            stateText.text = $"mix - {_grabbedObjectData.Name} -> {GetAnotherHandObjectData().Name}";
                         }
 
                         if (_mixTimer > _waitTimer)
@@ -111,6 +123,47 @@ public class ObjectForGrab : MonoBehaviour
                 }
             }
         }
+    }
+
+    public bool IsAnotherHandNullOrNotBowl()
+    {
+        if (isLeft)
+        {
+            if (ReferenceEquals(TaskManager.Instance.rightObjectGrabber._grabbedObjectData, null))
+            {
+                return true;
+            }
+                            
+                            
+            if (TaskManager.Instance.rightObjectGrabber._grabbedObjectData.Category !=
+                TaskManager.ObjectCategory.Bowl)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (ReferenceEquals(TaskManager.Instance.leftObjectGrabber._grabbedObjectData, null))
+            {
+                return true;
+            }
+                            
+                            
+            if (TaskManager.Instance.leftObjectGrabber._grabbedObjectData.Category !=
+                TaskManager.ObjectCategory.Bowl)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public TaskManager.ObjectData GetAnotherHandObjectData()
+    {
+        return isLeft
+            ? TaskManager.Instance.rightObjectGrabber._grabbedObjectData
+            : TaskManager.Instance.leftObjectGrabber._grabbedObjectData;
     }
 
     private Vector3 _mixStartPos = Vector3.zero;
@@ -224,6 +277,8 @@ public class ObjectForGrab : MonoBehaviour
                 }
                 
                 Debug.LogError($"놓은 물체 : {_grabbedObjectData?.Name}");
+                // TODO : 이게 풋이나 무브가 되어야함.
+                
                 _grabbedObjectData = null;
             }
                 break;

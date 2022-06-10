@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -204,4 +205,43 @@ public class TaskManager : MonoBehaviour
             Category = ObjectCategory.Spoon
         },
     };
+    
+    public List<AnimationData> animationDataList = new List<AnimationData>();
+
+    public class AnimationData
+    {
+        public AnimationCategory Category;
+
+        public string MainName;
+        public string SubName;
+
+        public string NearObjectNameForMove;
+    }
+
+    public enum AnimationCategory
+    {
+        Move,
+        Put,
+        Mix,
+        Chop,
+        Pour
+    }
+
+    public void AddAnimationData(AnimationData data)
+    {
+        if (animationDataList.Count < 1)
+        {
+            animationDataList.Add(data);
+        }
+        else
+        {
+            // 같은게 없을때만 넣어준다.
+            if (!animationDataList.Any(i =>
+                    i.Category == data.Category && i.MainName == data.MainName && i.SubName == data.SubName &&
+                    i.NearObjectNameForMove == data.NearObjectNameForMove))
+            {
+                animationDataList.Add(data);
+            }
+        }
+    }
 }

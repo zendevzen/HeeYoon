@@ -1,13 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Net.Sockets;
 using System.Text;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
-//using ExitGames.Client.Photon.StructWrapping;
-//using Microsoft.Azure.Kinect.Sensor;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -48,6 +45,17 @@ public class SocketManager : MonoBehaviour
         _by = height;
     }*/
 
+    public class DetectedData
+    {
+        public string name;
+    
+        public float x_0;
+        public float y_0;
+    
+        public float x_1;
+        public float y_1;
+    }
+    
     void AugmentingObject()
     {
         foreach (var t in augmentedObjectList)

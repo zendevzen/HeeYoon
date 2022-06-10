@@ -107,6 +107,11 @@ public class StartPage : MonoBehaviour
         if (TaskManager.Instance.CurrentTaskState != TaskManager.TaskState.Ready)
             return;
         
+        if (CurrentStartPageState != StartPageState.WorkSpaceSetting)
+        {
+            return;
+        }
+        
         leftProgressImage.fillAmount = 0f;
         
         leftFistText.gameObject.SetActive(false);
@@ -118,6 +123,11 @@ public class StartPage : MonoBehaviour
     {
         if (TaskManager.Instance.CurrentTaskState != TaskManager.TaskState.Ready)
             return;
+        
+        if (CurrentStartPageState != StartPageState.WorkSpaceSetting)
+        {
+            return;
+        }
         
         if (_isDone)
             return;
@@ -134,6 +144,11 @@ public class StartPage : MonoBehaviour
         if (TaskManager.Instance.CurrentTaskState != TaskManager.TaskState.Ready)
             return;
         
+        if (CurrentStartPageState != StartPageState.WorkSpaceSetting)
+        {
+            return;
+        }
+        
         rightProgressImage.fillAmount = 0f;
         
         rightFistText.gameObject.SetActive(false);
@@ -145,6 +160,11 @@ public class StartPage : MonoBehaviour
     {
         if (TaskManager.Instance.CurrentTaskState != TaskManager.TaskState.Ready)
             return;
+
+        if (CurrentStartPageState != StartPageState.WorkSpaceSetting)
+        {
+            return;
+        }
         
         if (_isDone)
             return;

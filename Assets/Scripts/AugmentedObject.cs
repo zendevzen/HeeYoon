@@ -37,13 +37,15 @@ public class AugmentedObject : MonoBehaviour
             return;
         }
 
-        Debug.LogError($"나는 {objectData.Category}인 {gameObject.name}인데 {other.gameObject.name} 랑 만남"); // 만났을때 cut..
+        Debug.LogError($"나는 {objectData.Category}인 {gameObject.name}인데 {other.gameObject.name} 랑 만남");
 
         if (objectData.Category == TaskManager.ObjectCategory.Knife)
         {
             if (other.GetComponent<AugmentedObject>().objectData.Category == TaskManager.ObjectCategory.Food)
             {
                 Debug.LogError($"컷컷컷 이벤트");
+                
+                // TODO : 컷
             }
         }
     }
