@@ -213,8 +213,6 @@ public class ObjectForGrab : MonoBehaviour
                     var dist = Vector3.Distance(SocketManager.Instance.augmentedObjectList[i].transform.position,
                         _handPosition.transform.position);
                     
-                    Debug.LogError($"dist {SocketManager.Instance.augmentedObjectList[i].nameText.text} {dist}");
-                    
                     if (dist < minVal)
                     {
                         minVal = dist;
@@ -297,7 +295,10 @@ public class ObjectForGrab : MonoBehaviour
                         minIndex = i;
                     }
                 }
+                
+                Debug.LogError($"놓은데서 가장가까운 물체와의거리 {minVal}");
 
+                // 풋이 되겠지
                 if (minIndex > -1)
                 {
                     var nearObjectData = SocketManager.Instance.augmentedObjectList[minIndex].GetComponent<AugmentedObject>()
@@ -308,15 +309,20 @@ public class ObjectForGrab : MonoBehaviour
                         break;
                     }
                     
-                    Debug.LogError($"놓은곳에서 가장 가까운 물체 : {_grabbedObjectData.Name}");
+                    Debug.LogError($"놓은곳에서 가장 가까운 물체 : {nearObjectData.Name}");
                     
                     // TODO : 이게 풋이나 무브가 되어야함.
                     
                     
                 }
-                
-                
-                
+                // 무브
+                else
+                {
+                    
+                }
+
+
+
                 _grabbedObjectData = null;
             }
                 break;

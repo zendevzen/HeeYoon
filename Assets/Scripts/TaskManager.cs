@@ -143,11 +143,6 @@ public class TaskManager : MonoBehaviour
         },
         new ObjectData()
         {
-            Name = "plate",
-            Category = ObjectCategory.Bowl
-        },
-        new ObjectData()
-        {
             Name = "knife",
             Category = ObjectCategory.Knife
         },
@@ -178,11 +173,6 @@ public class TaskManager : MonoBehaviour
         {
             Name = "apple",
             Category = ObjectCategory.Food
-        },
-        new ObjectData()
-        {
-            Name = "plate",
-            Category = ObjectCategory.Bowl
         },
         new ObjectData()
         {

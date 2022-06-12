@@ -187,7 +187,7 @@ public class StartPage : MonoBehaviour
         doneText.gameObject.SetActive(true);
 
         TaskManager.Instance.workPlacePos = (leftHandPosGo.transform.position + rightHandPosGo.transform.position) / 2f;
-        
+        TaskManager.Instance.workPlacePos.y -= 0.05f;
         // 작업공간의 높이를 설정해준다.
         //SocketManager.Instance.SetWorkSpaceHeight(TaskManager.Instance.workPlacePos.y);
         

@@ -171,6 +171,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 if (!TaskManager.Instance.isTeacher && _timer > 1f)
                 {
                     // TODO : 큐에 쌓인거 하나씩 시간차 두고하기
+                    
+                    
                 }
             }
                 break;

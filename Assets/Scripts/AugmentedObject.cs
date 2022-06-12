@@ -6,17 +6,42 @@ using UnityEngine.UI;
 
 public class AugmentedObject : MonoBehaviour
 {
-    public Text nameText;
-
     public TaskManager.ObjectData objectData;
+
+    public Transform objectParentTransform;
+
+    public void SetObject(string objectName)
+    {
+        var objList = gameObject.GetComponentsInChildren(typeof(Transform));
+        
+        foreach (var child in objList)
+        {
+            if(child.name == "ObjectParent" || child.name == "pass" || child.name == objectName)
+            {
+                continue;
+            }
+            
+            child.gameObject.SetActive(false);
+        }
+        
+        var objectGo = objectParentTransform.Find(objectName);
+
+        if (ReferenceEquals(objectGo, null))
+        {
+            return;
+        }
+
+        objectGo.gameObject.SetActive(true);
+    }
 
 
     public void SetObjectData(string text)
     {
         gameObject.name = text;
-        nameText.text = text;
 
         objectData = TaskManager.Instance.studentObjectDataList.Find(i => i.Name == text);
+
+        SetObject(text);
     }
 
 
