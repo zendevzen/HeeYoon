@@ -58,7 +58,7 @@ public class ObjectMatchPage : MonoBehaviour
             teacherButtonTextList[i].text = TaskManager.Instance.teacherObjectDataList[i].Name;
             teacherButtonTextList[i].color = Color.black;
 
-            studentButtonTextList[i].text = TaskManager.Instance.teacherObjectDataList[i].Name;
+            studentButtonTextList[i].text = TaskManager.Instance.studentObjectDataList[i].Name;
             studentButtonTextList[i].color = Color.black;
         }
         
