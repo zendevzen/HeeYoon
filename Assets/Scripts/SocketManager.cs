@@ -70,6 +70,7 @@ public class SocketManager : MonoBehaviour
 
             if (ReferenceEquals(matchItem, null))
             {
+                Debug.LogError($"새로만듬 {detectedDataList[i].name}");
                 var go = Instantiate(augmentedObjectPrefab);
                 matchItem = go.GetComponent<AugmentedObject>();
                 augmentedObjectList.Add(matchItem);

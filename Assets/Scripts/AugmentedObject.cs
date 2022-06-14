@@ -52,12 +52,7 @@ public class AugmentedObject : MonoBehaviour
 
         if (ReferenceEquals(objectData, null))
         {
-            if (TaskManager.Instance.isTeacher)
-            {
-                var idx = TaskManager.Instance.studentObjectDataList.FindIndex(i => i.Name == text);
-                objectData = TaskManager.Instance.teacherObjectDataList[idx];
-            }
-            else
+            if (!TaskManager.Instance.isTeacher)
             {
                 var idx = TaskManager.Instance.teacherObjectDataList.FindIndex(i => i.Name == text);
                 objectData = TaskManager.Instance.studentObjectDataList[idx];
