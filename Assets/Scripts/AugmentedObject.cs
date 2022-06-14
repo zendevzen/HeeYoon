@@ -50,6 +50,20 @@ public class AugmentedObject : MonoBehaviour
             objectData = TaskManager.Instance.studentObjectDataList.Find(i => i.Name == text);
         }
 
+        if (ReferenceEquals(objectData, null))
+        {
+            if (TaskManager.Instance.isTeacher)
+            {
+                var idx = TaskManager.Instance.studentObjectDataList.FindIndex(i => i.Name == text);
+                objectData = TaskManager.Instance.teacherObjectDataList[idx];
+            }
+            else
+            {
+                var idx = TaskManager.Instance.teacherObjectDataList.FindIndex(i => i.Name == text);
+                objectData = TaskManager.Instance.studentObjectDataList[idx];
+            }
+        }
+
 
         // 일단은 꺼준다.
         ShowObject(true);
