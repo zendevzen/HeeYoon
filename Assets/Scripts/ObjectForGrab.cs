@@ -247,7 +247,7 @@ public class ObjectForGrab : MonoBehaviour
                 {
                     var dist = Vector3.Distance(SocketManager.Instance.augmentedObjectList[i].transform.position,
                         _handPosition.transform.position);
-                    Debug.LogError($"{SocketManager.Instance.augmentedObjectList[i].objectData.Name} dist : {dist}");
+                    Debug.LogError($"{SocketManager.Instance.augmentedObjectList[i].objectData?.Name} dist : {dist}");
                     if (dist < minVal)
                     {
                         minVal = dist;
