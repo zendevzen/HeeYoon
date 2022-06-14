@@ -43,7 +43,8 @@ public class AugmentedObject : MonoBehaviour
         objectData = TaskManager.Instance.studentObjectDataList.Find(i => i.Name == text);
 
         // 일단은 꺼준다.
-        SetObject();
+        ShowObject(true);
+        //SetObject();
     }
 
     public void ShowObject(bool show)
