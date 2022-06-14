@@ -40,7 +40,15 @@ public class AugmentedObject : MonoBehaviour
     {
         //gameObject.name = text;
 
-        objectData = TaskManager.Instance.studentObjectDataList.Find(i => i.Name == text);
+        if (TaskManager.Instance.isTeacher)
+        {
+            objectData = TaskManager.Instance.teacherObjectDataList.Find(i => i.Name == text);
+        }
+        else
+        {
+            objectData = TaskManager.Instance.studentObjectDataList.Find(i => i.Name == text);
+        }
+        
 
         // 일단은 꺼준다.
         ShowObject(true);
