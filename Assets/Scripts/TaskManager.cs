@@ -215,7 +215,7 @@ public class TaskManager : MonoBehaviour
         Pour
     }
 
-    private void Start()
+    /*private void Start()
     {
         AddAnimationData(new AnimationData()
         {
@@ -230,7 +230,7 @@ public class TaskManager : MonoBehaviour
             MainName = "spoon",
             SubName = "cup",
         });
-    }
+    }*/
 
     public void AddAnimationData(AnimationData data)
     {

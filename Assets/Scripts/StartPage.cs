@@ -60,12 +60,12 @@ public class StartPage : MonoBehaviour
 
         ShowButton(false, false);
 
-        if (TaskManager.Instance.isTeacher)
+        /*if (TaskManager.Instance.isTeacher)
         {
             CurrentStartPageState = StartPageState.CheckConnection;
 
             return;
-        }
+        }*/
 
         leftProgressImage.fillAmount = 0f;
         leftFistText.gameObject.SetActive(true);
