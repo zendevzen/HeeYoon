@@ -59,6 +59,11 @@ public class ObjectForGrab : MonoBehaviour
             else
             {
                 stateText.text = $"grab - {_grabbedObjectData.Name}";
+
+                if (!TaskManager.Instance.isTeacher)
+                {
+                    return;
+                }
                 
                 if (_grabbedObjectData.Category == TaskManager.ObjectCategory.Bowl)
                 {
@@ -129,6 +134,21 @@ public class ObjectForGrab : MonoBehaviour
                             
                             _mixStartPos = Vector3.zero;
                         }
+                    }
+                }
+
+                else if (_grabbedObjectData.Category == TaskManager.ObjectCategory.Knife)
+                {
+                    if (GetAnotherHandObjectData().Category == TaskManager.ObjectCategory.Food)
+                    {
+                        Debug.LogError($"CUT");
+                
+                        TaskManager.Instance.AddAnimationData(new TaskManager.AnimationData()
+                        {
+                            Category = TaskManager.AnimationCategory.Cut,
+                            MainName = _grabbedObjectData.Name,
+                            SubName = GetAnotherHandObjectData().Name,
+                        });
                     }
                 }
             }
@@ -282,6 +302,11 @@ public class ObjectForGrab : MonoBehaviour
                 }
                 
                 Debug.LogError($"놓은 물체 : {_grabbedObjectData?.Name}");
+
+                if (!TaskManager.Instance.isTeacher)
+                {
+                    return;
+                }
                 
                 var minVal = 0.5f; // 거리 임계값
                 var minIndex = -1;

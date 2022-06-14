@@ -59,7 +59,7 @@ public class AugmentedObject : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (ReferenceEquals(objectData, null))
         {
@@ -92,5 +92,5 @@ public class AugmentedObject : MonoBehaviour
                 });
             }
         }
-    }
+    }*/
 }
