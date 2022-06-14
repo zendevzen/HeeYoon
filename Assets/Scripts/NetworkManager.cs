@@ -179,9 +179,34 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
                             var mainObject = SocketManager.Instance.augmentedObjectList.Find(i =>
                                 i.objectData.Name == animationData.MainName);
+
+                            if (ReferenceEquals(mainObject, null))
+                            {
+                                if (!TaskManager.Instance.isTeacher)
+                                {
+                                    var idx = TaskManager.Instance.teacherObjectDataList.FindIndex(i =>
+                                        i.Name == animationData.MainName);
+
+                                    mainObject = SocketManager.Instance.augmentedObjectList.Find(i =>
+                                        i.objectData.Name == TaskManager.Instance.studentObjectDataList[idx].Name);
+                                }
+                            }
                             
                             var subObject = SocketManager.Instance.augmentedObjectList.Find(i =>
                                 i.objectData.Name == animationData.SubName);
+                            
+                            if (ReferenceEquals(subObject, null))
+                            {
+                                if (!TaskManager.Instance.isTeacher)
+                                {
+                                    var idx = TaskManager.Instance.teacherObjectDataList.FindIndex(i =>
+                                        i.Name == animationData.MainName);
+
+                                    subObject = SocketManager.Instance.augmentedObjectList.Find(i =>
+                                        i.objectData.Name == TaskManager.Instance.studentObjectDataList[idx].Name);
+                                }
+                            }
+                            
 
                             Debug.LogError($"SocketManager.Instance.augmentedObjectList {SocketManager.Instance.augmentedObjectList.Count}");
                             Debug.LogError($"mainObject {mainObject}");
