@@ -108,9 +108,9 @@ public class AugmentedObject : MonoBehaviour
             {
                 if (other.GetComponent<AugmentedObject>().objectData.Category == TaskManager.ObjectCategory.Food)
                 {
-                    if (TaskManager.Instance.leftObjectGrabber.GetHandObjectData().Category ==
+                    if (TaskManager.Instance.leftObjectGrabber.GetHandObjectData()?.Category ==
                         TaskManager.ObjectCategory.Knife ||
-                        TaskManager.Instance.rightObjectGrabber.GetHandObjectData().Category ==
+                        TaskManager.Instance.rightObjectGrabber.GetHandObjectData()?.Category ==
                         TaskManager.ObjectCategory.Knife)
                     {
                         Debug.LogError($"CUT");
