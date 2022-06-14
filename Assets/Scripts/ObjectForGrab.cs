@@ -137,7 +137,7 @@ public class ObjectForGrab : MonoBehaviour
                     }
                 }
 
-                else if (_grabbedObjectData.Category == TaskManager.ObjectCategory.Knife)
+                /*else if (_grabbedObjectData.Category == TaskManager.ObjectCategory.Knife)
                 {
                     if (GetAnotherHandObjectData().Category == TaskManager.ObjectCategory.Food)
                     {
@@ -150,7 +150,7 @@ public class ObjectForGrab : MonoBehaviour
                             SubName = GetAnotherHandObjectData().Name,
                         });
                     }
-                }
+                }*/
             }
         }
     }
@@ -189,6 +189,11 @@ public class ObjectForGrab : MonoBehaviour
         return false;
     }
 
+    public TaskManager.ObjectData GetHandObjectData()
+    {
+        return _grabbedObjectData;
+    }
+    
     public TaskManager.ObjectData GetAnotherHandObjectData()
     {
         return isLeft

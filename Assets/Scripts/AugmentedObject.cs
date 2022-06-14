@@ -14,17 +14,18 @@ public class AugmentedObject : MonoBehaviour
     {
         Debug.LogError($"SetObject : {objectName}");
         var objList = gameObject.GetComponentsInChildren(typeof(Transform));
-        
+
         foreach (var child in objList)
         {
-            if(child.name == "ObjectParent" || child.name == "pass" || child.name == "AugmentedObject(Clone)" || child.name == objectName)
+            if (child.name == "ObjectParent" || child.name == "pass" || child.name == "AugmentedObject(Clone)" ||
+                child.name == objectName)
             {
                 continue;
             }
-            
+
             child.gameObject.SetActive(false);
         }
-        
+
         var objectGo = objectParentTransform.Find(objectName);
 
         if (ReferenceEquals(objectGo, null))
@@ -48,7 +49,7 @@ public class AugmentedObject : MonoBehaviour
         {
             objectData = TaskManager.Instance.studentObjectDataList.Find(i => i.Name == text);
         }
-        
+
 
         // 일단은 꺼준다.
         ShowObject(true);
@@ -68,7 +69,7 @@ public class AugmentedObject : MonoBehaviour
     }
 
 
-    /*private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (ReferenceEquals(objectData, null))
         {
@@ -87,19 +88,28 @@ public class AugmentedObject : MonoBehaviour
 
         //Debug.LogError($"나는 {objectData.Category}인 {gameObject.name}인데 {other.gameObject.name} 랑 만남");
 
-        if (objectData.Category == TaskManager.ObjectCategory.Knife)
+        if (TaskManager.Instance.isTeacher)
         {
-            if (other.GetComponent<AugmentedObject>().objectData.Category == TaskManager.ObjectCategory.Food)
+            if (objectData.Category == TaskManager.ObjectCategory.Knife)
             {
-                Debug.LogError($"CUT");
-                
-                TaskManager.Instance.AddAnimationData(new TaskManager.AnimationData()
+                if (other.GetComponent<AugmentedObject>().objectData.Category == TaskManager.ObjectCategory.Food)
                 {
-                    Category = TaskManager.AnimationCategory.Cut,
-                    MainName = objectData.Name,
-                    SubName = other.GetComponent<AugmentedObject>().objectData.Name,
-                });
+                    if (TaskManager.Instance.leftObjectGrabber.GetHandObjectData().Category ==
+                        TaskManager.ObjectCategory.Knife ||
+                        TaskManager.Instance.rightObjectGrabber.GetHandObjectData().Category ==
+                        TaskManager.ObjectCategory.Knife)
+                    {
+                        Debug.LogError($"CUT");
+
+                        TaskManager.Instance.AddAnimationData(new TaskManager.AnimationData()
+                        {
+                            Category = TaskManager.AnimationCategory.Cut,
+                            MainName = objectData.Name,
+                            SubName = other.GetComponent<AugmentedObject>().objectData.Name,
+                        });
+                    }
+                }
             }
         }
-    }*/
+    }
 }
