@@ -250,6 +250,7 @@ public class ObjectForGrab : MonoBehaviour
                         continue;
                     }
                     
+                    
                     var dist = Vector3.Distance(SocketManager.Instance.augmentedObjectList[i].transform.position,
                         _handPosition.transform.position);
                     Debug.LogError($"{SocketManager.Instance.augmentedObjectList[i].objectData?.Name} dist : {dist}");
@@ -324,6 +325,11 @@ public class ObjectForGrab : MonoBehaviour
                 for (var i = 0; i < SocketManager.Instance.augmentedObjectList.Count; i++)
                 {
                     if (!SocketManager.Instance.augmentedObjectList[i].gameObject.activeSelf)
+                    {
+                        continue;
+                    }
+
+                    if (_grabbedObjectData.Name == SocketManager.Instance.augmentedObjectList[i].name)
                     {
                         continue;
                     }
