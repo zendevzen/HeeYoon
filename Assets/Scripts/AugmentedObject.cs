@@ -12,6 +12,10 @@ public class AugmentedObject : MonoBehaviour
 
     public void SetObject(string objectName = "")
     {
+        if (ReferenceEquals(objectName, null))
+        {
+            objectName = "";
+        }
         Debug.LogError($"SetObject : {objectName}");
         var objList = gameObject.GetComponentsInChildren(typeof(Transform));
 
