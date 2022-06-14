@@ -69,7 +69,7 @@ public class AugmentedObject : MonoBehaviour
     {
         if (show)
         {
-            SetObject(objectData.Name);
+            SetObject(objectData?.Name);
         }
         else
         {
