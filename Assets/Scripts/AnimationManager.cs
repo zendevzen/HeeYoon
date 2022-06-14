@@ -6,44 +6,60 @@ using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
-    // TODO : 인스턴스 만들기 싱글턴
-    
-    public Transform mainObject;
-    public Transform targetObject;
+    public static AnimationManager Instance;
+
+    public GameObject augmentedObjectPrefab;
+    public AugmentedObject mainObject;
+    public AugmentedObject subObject;
 
     public bool isPlaying;
-    
-    public enum AnimationType
+
+    private void Awake()
+    {
+        Instance = this;
+        
+        var mainGo = Instantiate(augmentedObjectPrefab, transform);
+        mainObject = mainGo.GetComponent<AugmentedObject>();
+        mainObject.ShowObject(false);
+        
+        var subGo = Instantiate(augmentedObjectPrefab, transform);
+        subObject = subGo.GetComponent<AugmentedObject>();
+        subObject.ShowObject(false);
+    }
+
+    /*public enum AnimationType
     {
         Put,
         Mix,
         Cut,
         Pour
-    }
+    }*/
 
-    public void PlayAnimation(Transform main, Transform target, AnimationType animationType)
+    public void PlayAnimation(AugmentedObject main, AugmentedObject target, TaskManager.AnimationCategory animationType)
     {
+        Debug.LogError($"PlayAnimation {main.objectData.Name} {target.objectData.Name} {animationType}");
+        
         switch (animationType)
         {
-            case AnimationType.Put:
+            case TaskManager.AnimationCategory.Put:
             {
                 StartCoroutine(Co_Put(main, target));
             }
                 break;
 
-            case AnimationType.Mix:
+            case TaskManager.AnimationCategory.Mix:
             {
                 StartCoroutine(Co_Mix(main, target));
             }
                 break;
             
-            case AnimationType.Cut:
+            case TaskManager.AnimationCategory.Cut:
             {
                 StartCoroutine(Co_Cut(main, target));
             }
                 break;
             
-            case AnimationType.Pour:
+            case TaskManager.AnimationCategory.Pour:
             {
                 StartCoroutine(Co_Pour(main, target));
             }
@@ -51,110 +67,186 @@ public class AnimationManager : MonoBehaviour
         }
     }
     
-    private IEnumerator Co_Put(Transform main, Transform target)
+    private IEnumerator Co_Put(AugmentedObject main, AugmentedObject target)
     {
+        Debug.LogError("Co_Put 시작");
         isPlaying = true;
+
+        mainObject.objectData = main.objectData;
+        subObject.objectData = target.objectData;
         
-        var targetPos = target.position;
+        mainObject.ShowObject(true);
+        subObject.ShowObject(true);
+        
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        var mainTransform = mainObject.transform;
+
+        mainTransform.position = main.transform.position;
+        
+        var targetTransform = subObject.transform;
+        
+        targetTransform.position = target.transform.position;
+        
+        var targetPos = targetTransform.position;
         
         // 이동
-        var firstPos = main.position;
+        var firstPos = mainTransform.position;
         var secondPos = (firstPos + targetPos) / 2f + new Vector3(0f, 0.2f, 0f);
         var thirdPos = targetPos + new Vector3(0f, 0.1f, 0f);
         
-        main.DOPath(new[] {firstPos, secondPos, thirdPos}, 3f,PathType.CatmullRom).SetEase(Ease.InQuad);
+        mainTransform.DOPath(new[] {firstPos, secondPos, thirdPos}, 3f,PathType.CatmullRom).SetEase(Ease.InQuad);
             
         yield return new WaitForSecondsRealtime(4f);
 
         // 행동
         
-        main.DOPath(new[] {thirdPos, target.position}, 2f,PathType.Linear).SetEase(Ease.InQuad);
+        mainTransform.DOPath(new[] {thirdPos, targetTransform.position}, 2f,PathType.Linear).SetEase(Ease.InQuad);
         
         yield return new WaitForSecondsRealtime(5f);
         
-        // 오브젝트 꺼주기
+        mainObject.ShowObject(false);
+        subObject.ShowObject(false);
         
         isPlaying = false;
-        
-        // TODO : 오브젝트 어케 꺼줄지랑 플레이 중인지 판별하기
     }
     
     
-    private IEnumerator Co_Pour(Transform main, Transform target)
+    private IEnumerator Co_Pour(AugmentedObject main, AugmentedObject target)
     {
-        var targetPos = target.position;
+        isPlaying = true;
         
-        main.LookAt(target);
+        mainObject.objectData = main.objectData;
+        subObject.objectData = target.objectData;
+        
+        mainObject.ShowObject(true);
+        subObject.ShowObject(true);
+        
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        var mainTransform = mainObject.transform;
+
+        mainTransform.position = main.transform.position;
+        
+        var targetTransform = subObject.transform;
+        
+        targetTransform.position = target.transform.position;
+        
+        var targetPos = targetTransform.position;
+        
+        mainTransform.LookAt(targetTransform);
         
         // 이동
-        var firstPos = main.position;
+        var firstPos = mainTransform.position;
         var secondPos = (firstPos + targetPos) / 2f + new Vector3(0f, 0.2f, 0f);
         var thirdPos = targetPos + new Vector3(0f, 0.2f, 0f);
         
-        main.DOPath(new[] {firstPos, secondPos, thirdPos}, 3f,PathType.CatmullRom).SetEase(Ease.InQuad);
+        mainTransform.DOPath(new[] {firstPos, secondPos, thirdPos}, 3f,PathType.CatmullRom).SetEase(Ease.InQuad);
             
         yield return new WaitForSecondsRealtime(4f);
 
         // 행동
         
-        main.DORotate(main.rotation.eulerAngles + new Vector3(180f, 0f, 0f), 2f, RotateMode.FastBeyond360);
+        mainTransform.DORotate(mainTransform.rotation.eulerAngles + new Vector3(180f, 0f, 0f), 2f, RotateMode.FastBeyond360);
             
         yield return new WaitForSecondsRealtime(4f);
+
+        mainObject.ShowObject(false);
+        subObject.ShowObject(false);
         
-        
-        // 오브젝트 꺼주기
+        isPlaying = false;
     }
     
-    private IEnumerator Co_Mix(Transform main, Transform target)
+    private IEnumerator Co_Mix(AugmentedObject main, AugmentedObject target)
     {
-        var targetPos = target.position;
+        isPlaying = true;
         
-        main.LookAt(target);
+        mainObject.objectData = main.objectData;
+        subObject.objectData = target.objectData;
+        
+        mainObject.ShowObject(true);
+        subObject.ShowObject(true);
+        
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        var mainTransform = mainObject.transform;
+
+        mainTransform.position = main.transform.position;
+        
+        var targetTransform = subObject.transform;
+        
+        targetTransform.position = target.transform.position;
+        
+        var targetPos = targetTransform.position;
+        
+        mainTransform.LookAt(targetTransform);
 
         // 이동
-        var firstPos = main.position;
+        var firstPos = mainTransform.position;
         var secondPos = (firstPos + targetPos) / 2f + new Vector3(0f, 0.2f, 0f);
         var thirdPos = targetPos + new Vector3(0f, 0.14f, 0f);
         
-        main.DOPath(new[] {firstPos, secondPos, thirdPos}, 3f,PathType.CatmullRom).SetEase(Ease.InQuad);
+        mainTransform.DOPath(new[] {firstPos, secondPos, thirdPos}, 3f,PathType.CatmullRom).SetEase(Ease.InQuad);
             
         yield return new WaitForSecondsRealtime(4f);
 
         // 행동
         
-        main.DORotate(main.rotation.eulerAngles + new Vector3(0f, 1440f, 0f), 4f, RotateMode.FastBeyond360);
+        mainTransform.DORotate(mainTransform.rotation.eulerAngles + new Vector3(0f, 1440f, 0f), 4f, RotateMode.FastBeyond360);
             
         yield return new WaitForSecondsRealtime(4.5f);
+
+        mainObject.ShowObject(false);
+        subObject.ShowObject(false);
         
-        
-        // 오브젝트 꺼주기
+        isPlaying = false;
     }
     
-    private IEnumerator Co_Cut(Transform main, Transform target)
+    private IEnumerator Co_Cut(AugmentedObject main, AugmentedObject target)
     {
-        var targetPos = target.position;
+        isPlaying = true;
         
-        main.LookAt(target);
-        target.LookAt(main);
+        mainObject.objectData = main.objectData;
+        subObject.objectData = target.objectData;
+        
+        mainObject.ShowObject(true);
+        subObject.ShowObject(true);
+        
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        var mainTransform = mainObject.transform;
+
+        mainTransform.position = main.transform.position;
+        
+        var targetTransform = subObject.transform;
+        
+        targetTransform.position = target.transform.position;
+        
+        var targetPos = targetTransform.position;
+        
+        mainTransform.LookAt(targetTransform);
+        targetTransform.LookAt(mainTransform);
 
         // 이동
-        var firstPos = main.position;
+        var firstPos = mainTransform.position;
         var secondPos = (firstPos + targetPos) / 2f + new Vector3(0f, 0.2f, 0f);
         var thirdPos = targetPos + new Vector3(0f, 0.14f, 0f);
         
-        main.DOPath(new[] {firstPos, secondPos, thirdPos}, 3f,PathType.CatmullRom).SetEase(Ease.InQuad);
+        mainTransform.DOPath(new[] {firstPos, secondPos, thirdPos}, 3f,PathType.CatmullRom).SetEase(Ease.InQuad);
             
         yield return new WaitForSecondsRealtime(4f);
 
         // 행동
-        main.DOPath(new[] {thirdPos , targetPos, thirdPos, targetPos, thirdPos, targetPos, thirdPos, targetPos, thirdPos, thirdPos}, 3f,PathType.Linear).SetEase(Ease.Linear);
-        main.Rotate(0f, -30f, 0f);
-        main.DORotate(main.rotation.eulerAngles + new Vector3(0f, 60f, 0f), 3.5f, RotateMode.FastBeyond360);
+        mainTransform.DOPath(new[] {thirdPos , targetPos, thirdPos, targetPos, thirdPos, targetPos, thirdPos, targetPos, thirdPos, thirdPos}, 3f,PathType.Linear).SetEase(Ease.Linear);
+        mainTransform.Rotate(0f, -30f, 0f);
+        mainTransform.DORotate(mainTransform.rotation.eulerAngles + new Vector3(0f, 60f, 0f), 3.5f, RotateMode.FastBeyond360);
             
         yield return new WaitForSecondsRealtime(4.5f);
+
+        mainObject.ShowObject(false);
+        subObject.ShowObject(false);
         
-        
-        // 오브젝트 꺼주기
+        isPlaying = false;
     }
     
 }

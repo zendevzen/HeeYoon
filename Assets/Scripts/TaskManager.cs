@@ -97,6 +97,7 @@ public class TaskManager : MonoBehaviour
         _instance = this;
 
         //CurrentTaskState = TaskState.Play;
+
         CurrentTaskState = TaskState.Ready;
     }
     
@@ -204,18 +205,32 @@ public class TaskManager : MonoBehaviour
 
         public string MainName;
         public string SubName;
-
-        public string NearObjectNameForMove;
     }
 
     public enum AnimationCategory
     {
-        Move,
         Put,
         Mix,
-        Chop,
+        Cut,
         Pour
     }
+
+    /*private void Start()
+    {
+        AddAnimationData(new AnimationData()
+        {
+            Category = AnimationCategory.Put,
+            MainName = "spoon",
+            SubName = "cup",
+        });
+        
+        AddAnimationData(new AnimationData()
+        {
+            Category = AnimationCategory.Mix,
+            MainName = "spoon",
+            SubName = "cup",
+        });
+    }*/
 
     public void AddAnimationData(AnimationData data)
     {
@@ -227,8 +242,7 @@ public class TaskManager : MonoBehaviour
         {
             // 같은게 없을때만 넣어준다.
             if (!animationDataList.Any(i =>
-                    i.Category == data.Category && i.MainName == data.MainName && i.SubName == data.SubName &&
-                    i.NearObjectNameForMove == data.NearObjectNameForMove))
+                    i.Category == data.Category && i.MainName == data.MainName && i.SubName == data.SubName))
             {
                 animationDataList.Add(data);
             }

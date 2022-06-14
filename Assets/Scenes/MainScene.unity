@@ -14879,7 +14879,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &975550404
 Transform:
   m_ObjectHideFlags: 0
@@ -24519,6 +24519,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1581194451}
+  - component: {fileID: 1581194452}
   m_Layer: 0
   m_Name: AnimationManager
   m_TagString: Untagged
@@ -24534,12 +24535,28 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1581194450}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.19550002, y: 0, z: 0.111499995}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1581194452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581194450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e59cfe5f8103a6f4b9bb44955423b949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  augmentedObjectPrefab: {fileID: 4121049895575961081, guid: 5357fcfaf977bb44f9b5a495c13768b0, type: 3}
+  mainObject: {fileID: 0}
+  subObject: {fileID: 0}
+  isPlaying: 0
 --- !u!1 &1588644887
 GameObject:
   m_ObjectHideFlags: 0
@@ -35693,7 +35710,6 @@ MonoBehaviour:
   rightProgressImage: {fileID: 617070234}
   rightFistText: {fileID: 1150975780}
   doneText: {fileID: 21713817}
-  mapGo: {fileID: 975550403}
   readyButton: {fileID: 51902501}
   readyButtonBg: {fileID: 287471224}
   startButton: {fileID: 1339279534}

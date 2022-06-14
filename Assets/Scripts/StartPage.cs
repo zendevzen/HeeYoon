@@ -60,12 +60,12 @@ public class StartPage : MonoBehaviour
 
         ShowButton(false, false);
 
-        if (TaskManager.Instance.isTeacher)
+        /*if (TaskManager.Instance.isTeacher)
         {
             CurrentStartPageState = StartPageState.CheckConnection;
 
             return;
-        }
+        }*/
 
         leftProgressImage.fillAmount = 0f;
         leftFistText.gameObject.SetActive(true);
@@ -100,7 +100,7 @@ public class StartPage : MonoBehaviour
 
     private bool _isDone;
 
-    public GameObject mapGo;
+    // public GameObject mapGo;
     
     public void OnLeftFistGrip()
     {
@@ -193,11 +193,11 @@ public class StartPage : MonoBehaviour
         
         Debug.LogError($"workPlacePos {TaskManager.Instance.workPlacePos}");
 
-        mapGo.transform.position = TaskManager.Instance.workPlacePos;
-        mapGo.transform.LookAt(TaskManager.Instance.headPosTransform);
-        var angle = mapGo.transform.rotation.eulerAngles;
-        var yVal = angle.y;
-        mapGo.transform.rotation = Quaternion.Euler(0f, yVal, 0f);
+        //mapGo.transform.position = TaskManager.Instance.workPlacePos;
+        //mapGo.transform.LookAt(TaskManager.Instance.headPosTransform);
+        //var angle = mapGo.transform.rotation.eulerAngles;
+        //var yVal = angle.y;
+        //mapGo.transform.rotation = Quaternion.Euler(0f, yVal, 0f);
         
         yield return new WaitForSecondsRealtime(3f);
 

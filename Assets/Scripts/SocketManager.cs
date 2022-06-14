@@ -40,10 +40,6 @@ public class SocketManager : MonoBehaviour
     public float _by = 0f; //TaskManager.Instance.workPlacePos.y; // 손높이로하자
     public float _bz = -0.3f;
 
-    /*public void SetWorkSpaceHeight(float height)
-    {
-        _by = height;
-    }*/
 
     public class DetectedData
     {
@@ -74,8 +70,9 @@ public class SocketManager : MonoBehaviour
 
             if (ReferenceEquals(matchItem, null))
             {
-                augmentedObjectList.Add(Instantiate(augmentedObjectPrefab).GetComponent<AugmentedObject>());
-                return;
+                var go = Instantiate(augmentedObjectPrefab);
+                matchItem = go.GetComponent<AugmentedObject>();
+                augmentedObjectList.Add(matchItem);
             }
             
             var _x = (detectedDataList[i].x_0 + detectedDataList[i].x_1) / 2000;

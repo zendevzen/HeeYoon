@@ -64,13 +64,17 @@ public class ObjectForGrab : MonoBehaviour
                 {
                     if (Mathf.Abs(upPourChecker.position.y - downPourChecker.position.y) < 0.02f)
                     {
-                        // TODO : 왼손 오른손 양쪽에 보울 들고 기울일때 붓는걸로 하자.
-                        Debug.LogError($"{Mathf.Abs(upPourChecker.position.y - downPourChecker.position.y)}   기울임!!!!");
-
                         if (!IsAnotherHandNullOrNotBowl())
                         {
                             stateText.text =
                                 $"pour - {_grabbedObjectData.Name} -> {GetAnotherHandObjectData().Name}";
+                            
+                            TaskManager.Instance.AddAnimationData(new TaskManager.AnimationData()
+                            {
+                                Category = TaskManager.AnimationCategory.Pour,
+                                MainName = _grabbedObjectData.Name,
+                                SubName = GetAnotherHandObjectData().Name,
+                            });
                         }
                     }
                 }
@@ -85,8 +89,7 @@ public class ObjectForGrab : MonoBehaviour
                             
                         return;
                     }
-
-                    // TODO : 섞기 하기
+                    
                     if (_mixStartPos == Vector3.zero)
                     {
                         _mixTimer = 0f;
@@ -107,9 +110,16 @@ public class ObjectForGrab : MonoBehaviour
 
                         if (_maxDistance >= _mixDistance && dist < _mixMinDistance)
                         {
-                            Debug.LogError("섞는다 섞는다!!!!!!");
+                            Debug.LogError("MIX");
                             
                             stateText.text = $"mix - {_grabbedObjectData.Name} -> {GetAnotherHandObjectData().Name}";
+                            
+                            TaskManager.Instance.AddAnimationData(new TaskManager.AnimationData()
+                            {
+                                Category = TaskManager.AnimationCategory.Mix,
+                                MainName = _grabbedObjectData.Name,
+                                SubName = GetAnotherHandObjectData().Name,
+                            });
                         }
 
                         if (_mixTimer > _waitTimer)
@@ -203,7 +213,7 @@ public class ObjectForGrab : MonoBehaviour
             }
                 break;
             
-            case TaskManager.TaskState.Play: // TODO : 이부분 해결하기 뭐 잡았는지 알아야하고 그다음 만나는거에 따라서 컷같은 이벤트 알게하기.
+            case TaskManager.TaskState.Play:
             {
                 var minVal = 0.5f; // 거리 임계값
                 var minIndex = -1;
@@ -233,10 +243,7 @@ public class ObjectForGrab : MonoBehaviour
                     Debug.LogError($"잡은 물체 : {_grabbedObjectData.Name}");
 
                     _handRotationOnGrabbed = _handPosition.transform.rotation.eulerAngles;
-                    
-                    Debug.LogError($"잡을때 손 각도 : {_handRotationOnGrabbed}");
                 }
-                
             }
                 break;
         }
@@ -276,9 +283,6 @@ public class ObjectForGrab : MonoBehaviour
                 
                 Debug.LogError($"놓은 물체 : {_grabbedObjectData?.Name}");
                 
-                
-                
-                
                 var minVal = 0.5f; // 거리 임계값
                 var minIndex = -1;
                 
@@ -310,18 +314,16 @@ public class ObjectForGrab : MonoBehaviour
                     }
                     
                     Debug.LogError($"놓은곳에서 가장 가까운 물체 : {nearObjectData.Name}");
-                    
-                    // TODO : 이게 풋이나 무브가 되어야함.
-                    
-                    
-                }
-                // 무브
-                else
-                {
-                    
-                }
 
+                    Debug.LogError("PUT");
 
+                    TaskManager.Instance.AddAnimationData(new TaskManager.AnimationData()
+                    {
+                        Category = TaskManager.AnimationCategory.Put,
+                        MainName = _grabbedObjectData.Name,
+                        SubName = nearObjectData.Name,
+                    });
+                }
 
                 _grabbedObjectData = null;
             }

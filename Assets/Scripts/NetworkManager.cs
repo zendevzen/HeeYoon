@@ -170,9 +170,36 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 // Worker 인 경우
                 if (!TaskManager.Instance.isTeacher && _timer > 1f)
                 {
-                    // TODO : 큐에 쌓인거 하나씩 시간차 두고하기
+                    if (!AnimationManager.Instance.isPlaying)
+                    {
+                        if (TaskManager.Instance.animationDataList.Count > 0)
+                        {
+                            var animationData = TaskManager.Instance.animationDataList[0];
+                            
+
+                            var mainObject = SocketManager.Instance.augmentedObjectList.Find(i =>
+                                i.objectData.Name == animationData.MainName);
+                            
+                            var subObject = SocketManager.Instance.augmentedObjectList.Find(i =>
+                                i.objectData.Name == animationData.SubName);
+
+                            Debug.LogError($"SocketManager.Instance.augmentedObjectList {SocketManager.Instance.augmentedObjectList.Count}");
+                            Debug.LogError($"mainObject {mainObject}");
+                            Debug.LogError($"subObject {subObject}");
+                            
+                            if (!ReferenceEquals(mainObject, null) && !ReferenceEquals(subObject, null))
+                            {
+                                Debug.LogError($"animationData.Category {animationData.Category}");
+                                
+                                // 이름으로 오브젝트 갖고와야함
+                                TaskManager.Instance.animationDataList.RemoveAt(0);
+                                
+                                AnimationManager.Instance.PlayAnimation(mainObject, subObject, animationData.Category);
+                            }
+                        }
+                    }
                     
-                    
+                    _timer = 0f;
                 }
             }
                 break;
@@ -186,14 +213,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // 정보 전달하기.. 어떤식으로 전달하지 json? list?
     private void SendAnimationData()
     {
-        // 어떤 오브젝트 끼리 어떤 상호작용이 일어나고 있는지 내용을 보내줘야함.
-
-        //TODO : 트리밍 해줘야함. 같은거 여러번 가거나 하는걸 막아야함.. 어케하지 1초마다니까 같은거 검색해서 하나뺴고 다지워 근데 중간에 다른거 껴있으면 앞에거지우나 뒤에꺼 지우나. 낀건 오류일 확률이 높겠지 1초니까
-
         if (TaskManager.Instance.animationDataList.Count > 0)
         {
             var jsonString = JsonConvert.SerializeObject(TaskManager.Instance.animationDataList);
             photonView.RPC("GetAnimationData", RpcTarget.Others, jsonString);
+            
+            TaskManager.Instance.animationDataList.Clear();
         }
     }
 
@@ -262,6 +287,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"IsStart", false}});
         
         CurrentSyncState = SyncState.Wait;
+        
+        //TODO : 없애기
+        
+        //CurrentSyncState = SyncState.Sync;
     }
 
     public override void OnDisconnected(DisconnectCause cause)
