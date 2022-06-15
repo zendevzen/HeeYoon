@@ -194,8 +194,8 @@ public class ObjectForGrab : MonoBehaviour
     
     private float _waitTimer = 0.5f;
 
-    private float _mixDistance = 0.1f;
-    private float _mixMinDistance = 0.04f;
+    private float _mixDistance = 0.06f;
+    private float _mixMinDistance = 0.02f;
     
     private float _maxDistance;
     
