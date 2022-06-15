@@ -161,14 +161,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             case SyncState.Sync:
             {
                 // Expert 인 경우
-                if (TaskManager.Instance.isTeacher && _timer > 3f)
+                if (TaskManager.Instance.isTeacher && _timer > 6f)
                 {
                     _timer = 0;
                     SendAnimationData();
                 }
 
                 // Worker 인 경우
-                if (!TaskManager.Instance.isTeacher && _timer > 2f)
+                if (!TaskManager.Instance.isTeacher && _timer > 5f)
                 {
                     if (!AnimationManager.Instance.isPlaying)
                     {
