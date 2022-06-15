@@ -38,7 +38,7 @@ public class TaskManager : MonoBehaviour
         else
         {
             pageHandlerTransform.SetParent(null);
-            pageHandlerTransform.position = new Vector3(0f, -0.1f, 0.6f);
+            pageHandlerTransform.position = new Vector3(0f, -0.1f, 0.3f);
             pageHandlerTransform.rotation = Quaternion.Euler(Vector3.zero);
         }
     }
@@ -96,9 +96,9 @@ public class TaskManager : MonoBehaviour
     {
         _instance = this;
 
-        //CurrentTaskState = TaskState.Play;
+        CurrentTaskState = TaskState.Play;
 
-        CurrentTaskState = TaskState.Ready;
+        //CurrentTaskState = TaskState.Ready;
     }
     
     // 선생인지 학생인지 선택하게 하기
@@ -215,22 +215,22 @@ public class TaskManager : MonoBehaviour
         Pour
     }
 
-    /*private void Start()
+    private void Start()
     {
         AddAnimationData(new AnimationData()
         {
             Category = AnimationCategory.Put,
-            MainName = "spoon",
-            SubName = "cup",
+            MainName = "banana",
+            SubName = "bottle",
         });
         
         AddAnimationData(new AnimationData()
         {
             Category = AnimationCategory.Mix,
             MainName = "spoon",
-            SubName = "cup",
+            SubName = "bottle",
         });
-    }*/
+    }
 
     public void AddAnimationData(AnimationData data)
     {

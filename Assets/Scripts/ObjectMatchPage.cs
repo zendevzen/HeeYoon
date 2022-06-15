@@ -88,6 +88,11 @@ public class ObjectMatchPage : MonoBehaviour
 
     public void StudentButtonClicked(int index)
     {
+        if (!IsFixMode)
+        {
+            return;
+        }
+        
         if (_currentSelectedIndex < 0)
         {
             _currentSelectedIndex = index;

@@ -77,8 +77,6 @@ public class AnimationManager : MonoBehaviour
         
         mainObject.ShowObject(true);
         subObject.ShowObject(true);
-        
-        yield return new WaitForSecondsRealtime(1.5f);
 
         var mainTransform = mainObject.transform;
 
@@ -89,6 +87,8 @@ public class AnimationManager : MonoBehaviour
         targetTransform.position = target.transform.position;
         
         var targetPos = targetTransform.position;
+        
+        yield return new WaitForSecondsRealtime(1.5f);
         
         // 이동
         var firstPos = mainTransform.position;
@@ -121,8 +121,6 @@ public class AnimationManager : MonoBehaviour
         
         mainObject.ShowObject(true);
         subObject.ShowObject(true);
-        
-        yield return new WaitForSecondsRealtime(1.5f);
 
         var mainTransform = mainObject.transform;
 
@@ -135,6 +133,9 @@ public class AnimationManager : MonoBehaviour
         var targetPos = targetTransform.position;
         
         mainTransform.LookAt(targetTransform);
+        
+        
+        yield return new WaitForSecondsRealtime(1.5f);
         
         // 이동
         var firstPos = mainTransform.position;
@@ -166,8 +167,7 @@ public class AnimationManager : MonoBehaviour
         
         mainObject.ShowObject(true);
         subObject.ShowObject(true);
-        
-        yield return new WaitForSecondsRealtime(1.5f);
+
 
         var mainTransform = mainObject.transform;
 
@@ -180,6 +180,9 @@ public class AnimationManager : MonoBehaviour
         var targetPos = targetTransform.position;
         
         mainTransform.LookAt(targetTransform);
+        
+        
+        yield return new WaitForSecondsRealtime(1.5f);
 
         // 이동
         var firstPos = mainTransform.position;
@@ -212,7 +215,6 @@ public class AnimationManager : MonoBehaviour
         mainObject.ShowObject(true);
         subObject.ShowObject(true);
         
-        yield return new WaitForSecondsRealtime(1.5f);
 
         var mainTransform = mainObject.transform;
 
@@ -226,6 +228,8 @@ public class AnimationManager : MonoBehaviour
         
         mainTransform.LookAt(targetTransform);
         targetTransform.LookAt(mainTransform);
+        
+        yield return new WaitForSecondsRealtime(1.5f);
 
         // 이동
         var firstPos = mainTransform.position;

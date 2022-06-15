@@ -176,11 +176,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                         {
                             var animationData = TaskManager.Instance.animationDataList[0];
                             
-
                             var mainObject = SocketManager.Instance.augmentedObjectList.Find(i =>
                                 i.objectData.Name == animationData.MainName);
 
-                            if (ReferenceEquals(mainObject, null))
+                            if (ReferenceEquals(mainObject, null)) // TODO : 널일때 이상한걸로 바뀜
                             {
                                 if (!TaskManager.Instance.isTeacher)
                                 {
@@ -200,7 +199,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                                 if (!TaskManager.Instance.isTeacher)
                                 {
                                     var idx = TaskManager.Instance.teacherObjectDataList.FindIndex(i =>
-                                        i.Name == animationData.MainName);
+                                        i.Name == animationData.SubName);
 
                                     subObject = SocketManager.Instance.augmentedObjectList.Find(i =>
                                         i.objectData.Name == TaskManager.Instance.studentObjectDataList[idx].Name);
@@ -208,13 +207,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                             }
                             
 
-                            Debug.LogError($"SocketManager.Instance.augmentedObjectList {SocketManager.Instance.augmentedObjectList.Count}");
+                            /*Debug.LogError($"SocketManager.Instance.augmentedObjectList {SocketManager.Instance.augmentedObjectList.Count}");
                             Debug.LogError($"mainObject {mainObject}");
-                            Debug.LogError($"subObject {subObject}");
+                            Debug.LogError($"subObject {subObject}");*/
                             
                             if (!ReferenceEquals(mainObject, null) && !ReferenceEquals(subObject, null))
                             {
-                                Debug.LogError($"animationData.Category {animationData.Category}");
+                                Debug.LogError($"animationData {mainObject.objectData.Name} {subObject.objectData.Name} {animationData.Category}");
                                 
                                 // 이름으로 오브젝트 갖고와야함
                                 TaskManager.Instance.animationDataList.RemoveAt(0);
@@ -311,11 +310,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"IsReady", false}});
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"IsStart", false}});
         
-        CurrentSyncState = SyncState.Wait;
+        //CurrentSyncState = SyncState.Wait;
         
         //TODO : 없애기
         
-        //CurrentSyncState = SyncState.Sync;
+        CurrentSyncState = SyncState.Sync;
     }
 
     public override void OnDisconnected(DisconnectCause cause)
