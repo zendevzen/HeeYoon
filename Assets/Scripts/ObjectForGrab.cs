@@ -58,7 +58,10 @@ public class ObjectForGrab : MonoBehaviour
             }
             else
             {
-                stateText.text = $"grab - {_grabbedObjectData.Name}";
+                if (!stateText.text.Contains("mix"))
+                {
+                    stateText.text = $"grab - {_grabbedObjectData.Name}";
+                }
 
                 if (!TaskManager.Instance.isTeacher)
                 {
@@ -194,7 +197,7 @@ public class ObjectForGrab : MonoBehaviour
     
     private float _waitTimer = 0.5f;
 
-    private float _mixDistance = 0.06f;
+    private float _mixDistance = 0.04f;
     private float _mixMinDistance = 0.02f;
     
     private float _maxDistance;
@@ -202,7 +205,7 @@ public class ObjectForGrab : MonoBehaviour
     
     public void Grab()
     {
-        Debug.LogError("잡음");
+        //Debug.LogError("잡음");
 
         switch (TaskManager.Instance.CurrentTaskState)
         {
@@ -240,7 +243,7 @@ public class ObjectForGrab : MonoBehaviour
                     
                     var dist = Vector3.Distance(SocketManager.Instance.augmentedObjectList[i].transform.position,
                         _handPosition.transform.position);
-                    Debug.LogError($"{SocketManager.Instance.augmentedObjectList[i].objectData?.Name} dist : {dist}");
+                    //Debug.LogError($"{SocketManager.Instance.augmentedObjectList[i].objectData?.Name} dist : {dist}");
                     if (dist < minVal)
                     {
                         minVal = dist;
@@ -258,7 +261,7 @@ public class ObjectForGrab : MonoBehaviour
                         break;
                     }
                     
-                    Debug.LogError($"잡은 물체 : {_grabbedObjectData.Name}");
+                    //Debug.LogError($"잡은 물체 : {_grabbedObjectData.Name}");
 
                     _handRotationOnGrabbed = _handPosition.transform.rotation.eulerAngles;
                 }
@@ -269,7 +272,7 @@ public class ObjectForGrab : MonoBehaviour
     
     public void Release()
     {
-        Debug.LogError("놓음");
+        //Debug.LogError("놓음");
         
         switch (TaskManager.Instance.CurrentTaskState)
         {
