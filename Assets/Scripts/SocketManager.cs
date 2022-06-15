@@ -68,23 +68,28 @@ public class SocketManager : MonoBehaviour
                 matchItem = augmentedObjectList.Find(item => ReferenceEquals(item.objectData, null));
             }
 
+            var _x = (detectedDataList[i].x_0 + detectedDataList[i].x_1) / 2000;
+            var _y = -(detectedDataList[i].y_0 + detectedDataList[i].y_1) / 2000;
+            
             if (ReferenceEquals(matchItem, null))
             {
                 Debug.LogError($"새로만듬 {detectedDataList[i].name}");
                 var go = Instantiate(augmentedObjectPrefab);
                 matchItem = go.GetComponent<AugmentedObject>();
                 augmentedObjectList.Add(matchItem);
+
+                matchItem.gameObject.SetActive(true);
+                matchItem.transform.position = TaskManager.Instance.workPlacePos + new Vector3(-_x + _bx, _by, -_y + _bz);
+            
+                matchItem.SetObjectData(detectedDataList[i].name);
+            
+                matchItem.ShowObject(true);
             }
-            
-            var _x = (detectedDataList[i].x_0 + detectedDataList[i].x_1) / 2000;
-            var _y = -(detectedDataList[i].y_0 + detectedDataList[i].y_1) / 2000;
-            
+
             matchItem.gameObject.SetActive(true);
             matchItem.transform.position = TaskManager.Instance.workPlacePos + new Vector3(-_x + _bx, _by, -_y + _bz);
             
             matchItem.SetObjectData(detectedDataList[i].name);
-            
-            matchItem.ShowObject(true);
         }
     }
 
