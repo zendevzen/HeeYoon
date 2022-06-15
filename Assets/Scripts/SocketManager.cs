@@ -159,10 +159,11 @@ public class SocketManager : MonoBehaviour
                     detectedDataList.Add(itemData);
                 }
 
-                if (TaskManager.Instance.CurrentTaskState == TaskManager.TaskState.Play)
+                AugmentingObject();
+                /*if (TaskManager.Instance.CurrentTaskState == TaskManager.TaskState.Play)
                 {
                     AugmentingObject();
-                }
+                }*/
             }
         }
         else
