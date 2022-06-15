@@ -38,7 +38,7 @@ public class TaskManager : MonoBehaviour
         else
         {
             pageHandlerTransform.SetParent(null);
-            pageHandlerTransform.position = new Vector3(0f, -0.1f, 0.3f);
+            pageHandlerTransform.position = new Vector3(0f, -0.1f, 0.4f);
             pageHandlerTransform.rotation = Quaternion.Euler(Vector3.zero);
         }
     }

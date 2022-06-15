@@ -48,6 +48,11 @@ public class StartPage : MonoBehaviour
                 checkConnectionPanel.SetActive(true);
                 
                 TaskManager.Instance.FixCanvasToHead(false);
+                
+                foreach (var obj in SocketManager.Instance.augmentedObjectList)
+                {
+                    obj.ShowObject(true);
+                }
             }
                 break;
         }
