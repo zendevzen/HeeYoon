@@ -310,11 +310,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"IsReady", false}});
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable {{"IsStart", false}});
         
-        //CurrentSyncState = SyncState.Wait;
+        CurrentSyncState = SyncState.Wait;
         
         //TODO : 없애기
         
-        CurrentSyncState = SyncState.Sync;
+        //CurrentSyncState = SyncState.Sync;
     }
 
     public override void OnDisconnected(DisconnectCause cause)

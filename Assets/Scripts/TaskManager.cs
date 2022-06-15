@@ -96,9 +96,9 @@ public class TaskManager : MonoBehaviour
     {
         _instance = this;
 
-        CurrentTaskState = TaskState.Play;
+        //CurrentTaskState = TaskState.Play;
 
-        //CurrentTaskState = TaskState.Ready;
+        CurrentTaskState = TaskState.Ready;
     }
     
     // 선생인지 학생인지 선택하게 하기
