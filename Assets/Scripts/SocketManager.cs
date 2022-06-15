@@ -83,6 +83,8 @@ public class SocketManager : MonoBehaviour
             matchItem.transform.position = TaskManager.Instance.workPlacePos + new Vector3(-_x + _bx, _by, -_y + _bz);
             
             matchItem.SetObjectData(detectedDataList[i].name);
+            
+            matchItem.ShowObject(true);
         }
     }
 
