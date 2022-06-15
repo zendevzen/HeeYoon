@@ -108,6 +108,8 @@ public class ObjectForGrab : MonoBehaviour
 
                         var dist = Vector3.Distance(_mixStartPos, transform.position);
                         
+                        Debug.LogError($"dist {dist}");
+                        
                         if (dist > _maxDistance)
                         {
                             _maxDistance = dist;
@@ -136,21 +138,6 @@ public class ObjectForGrab : MonoBehaviour
                         }
                     }
                 }
-
-                /*else if (_grabbedObjectData.Category == TaskManager.ObjectCategory.Knife)
-                {
-                    if (GetAnotherHandObjectData().Category == TaskManager.ObjectCategory.Food)
-                    {
-                        Debug.LogError($"CUT");
-                
-                        TaskManager.Instance.AddAnimationData(new TaskManager.AnimationData()
-                        {
-                            Category = TaskManager.AnimationCategory.Cut,
-                            MainName = _grabbedObjectData.Name,
-                            SubName = GetAnotherHandObjectData().Name,
-                        });
-                    }
-                }*/
             }
         }
     }
@@ -205,10 +192,10 @@ public class ObjectForGrab : MonoBehaviour
 
     private float _mixTimer = 0f;
     
-    private float _waitTimer = 1f;
+    private float _waitTimer = 0.5f;
 
-    private float _mixDistance = 0.2f;
-    private float _mixMinDistance = 0.1f;
+    private float _mixDistance = 0.25f;
+    private float _mixMinDistance = 0.15f;
     
     private float _maxDistance;
     
