@@ -168,7 +168,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 }
 
                 // Worker 인 경우
-                if (!TaskManager.Instance.isTeacher && _timer > 1f)
+                if (!TaskManager.Instance.isTeacher && _timer > 2f)
                 {
                     if (!AnimationManager.Instance.isPlaying)
                     {
@@ -179,7 +179,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                             var mainObject = SocketManager.Instance.augmentedObjectList.Find(i =>
                                 i.objectData.Name == animationData.MainName);
 
-                            if (ReferenceEquals(mainObject, null)) // TODO : 널일때 이상한걸로 바뀜
+                            if (ReferenceEquals(mainObject, null))
                             {
                                 if (!TaskManager.Instance.isTeacher)
                                 {
@@ -257,7 +257,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             foreach (var data in dataList)
             {
-                TaskManager.Instance.animationDataList.Add(data);
+                TaskManager.Instance.AddAnimationData(data);
             }
         }
     }

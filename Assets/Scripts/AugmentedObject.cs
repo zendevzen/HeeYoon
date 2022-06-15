@@ -16,7 +16,7 @@ public class AugmentedObject : MonoBehaviour
         {
             objectName = "";
         }
-        //Debug.LogError($"SetObject : {objectName}");
+        
         var objList = gameObject.GetComponentsInChildren(typeof(Transform));
 
         foreach (var child in objList)
