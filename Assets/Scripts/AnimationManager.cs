@@ -69,7 +69,7 @@ public class AnimationManager : MonoBehaviour
     
     private IEnumerator Co_Put(AugmentedObject main, AugmentedObject target)
     {
-        Debug.LogError("Co_Put 시작");
+        //Debug.LogError("Co_Put 시작");
         isPlaying = true;
 
         mainObject.objectData = main.objectData;

@@ -318,6 +318,11 @@ public class ObjectForGrab : MonoBehaviour
                 {
                     return;
                 }
+
+                if (_grabbedObjectData.Category != TaskManager.ObjectCategory.Food)
+                {
+                    return;
+                }
                 
                 var minVal = 0.5f; // 거리 임계값
                 var minIndex = -1;
@@ -329,7 +334,13 @@ public class ObjectForGrab : MonoBehaviour
                         continue;
                     }
 
-                    if (_grabbedObjectData.Name == SocketManager.Instance.augmentedObjectList[i].name)
+                    if (_grabbedObjectData.Name == SocketManager.Instance.augmentedObjectList[i].objectData.Name)
+                    {
+                        continue;
+                    }
+
+                    if (SocketManager.Instance.augmentedObjectList[i].objectData.Category !=
+                        TaskManager.ObjectCategory.Bowl)
                     {
                         continue;
                     }

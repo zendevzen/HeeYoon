@@ -213,7 +213,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                             
                             if (!ReferenceEquals(mainObject, null) && !ReferenceEquals(subObject, null))
                             {
-                                Debug.LogError($"animationData {mainObject.objectData.Name} {subObject.objectData.Name} {animationData.Category}");
+                                //Debug.LogError($"animationData {mainObject.objectData.Name} {subObject.objectData.Name} {animationData.Category}");
                                 
                                 // 이름으로 오브젝트 갖고와야함
                                 TaskManager.Instance.animationDataList.RemoveAt(0);
