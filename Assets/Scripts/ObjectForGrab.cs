@@ -240,7 +240,7 @@ public class ObjectForGrab : MonoBehaviour
             
             case TaskManager.TaskState.Play:
             {
-                var minVal = 0.75f; // 거리 임계값
+                var minVal = 0.35f; // 거리 임계값
                 var minIndex = -1;
                 
                 for (var i = 0; i < SocketManager.Instance.augmentedObjectList.Count; i++)
@@ -316,15 +316,17 @@ public class ObjectForGrab : MonoBehaviour
 
                 if (!TaskManager.Instance.isTeacher)
                 {
+                    _grabbedObjectData = null;
                     return;
                 }
 
                 if (_grabbedObjectData.Category != TaskManager.ObjectCategory.Food)
                 {
+                    _grabbedObjectData = null;
                     return;
                 }
                 
-                var minVal = 0.5f; // 거리 임계값
+                var minVal = 0.25f; // 거리 임계값
                 var minIndex = -1;
                 
                 for (var i = 0; i < SocketManager.Instance.augmentedObjectList.Count; i++)
