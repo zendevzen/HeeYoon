@@ -89,6 +89,11 @@ public class TaskManager : MonoBehaviour
                 objectMatchPage.gameObject.SetActive(false);
                 
                 pageHandlerTransform.gameObject.SetActive(false);
+                
+                foreach (var obj in SocketManager.Instance.augmentedObjectList)
+                {
+                    obj.ShowObject(false);
+                }
             }
                 break;
         }
