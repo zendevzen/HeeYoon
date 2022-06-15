@@ -369,6 +369,7 @@ public class ObjectForGrab : MonoBehaviour
 
                     if (ReferenceEquals(nearObjectData, null))
                     {
+                        _grabbedObjectData = null;
                         break;
                     }
                     

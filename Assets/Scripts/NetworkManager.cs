@@ -61,6 +61,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             case SyncState.Sync:
             {
                 // Sync 시작
+                foreach (var obj in SocketManager.Instance.augmentedObjectList)
+                {
+                    obj.ShowObject(false);
+                }
             }
                 break;
         }

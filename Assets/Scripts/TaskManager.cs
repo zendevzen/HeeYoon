@@ -87,6 +87,8 @@ public class TaskManager : MonoBehaviour
             {
                 startPage.gameObject.SetActive(false);
                 objectMatchPage.gameObject.SetActive(false);
+                
+                pageHandlerTransform.gameObject.SetActive(false);
             }
                 break;
         }

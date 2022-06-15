@@ -65,7 +65,7 @@ public class AugmentedObject : MonoBehaviour
 
 
         // 일단은 꺼준다.
-        ShowObject(false);
+        ShowObject(true);
         //SetObject();
     }
 

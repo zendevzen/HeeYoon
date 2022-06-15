@@ -1,4 +1,10 @@
 cd C:\work\HeeYoon\yolov5
 conda activate torch
-python detect.py --source 0 --classes 39 41 43 44 45 46 47 54
+python detect.py --source 0 --classes 41 43 44 45 47
+
+
+
+학생   41 43 44 45 47
+
+선생   39 43 44 45 46
 
